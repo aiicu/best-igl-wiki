@@ -40,8 +40,12 @@ best igl：
             --- main.pdf # 事件记录文档的pdf版本
             |
             --- images # main.md需要的图片,存储的文件夹,可能没有
+            |     |
+            |     --- xxx.png
+            |
+            --- videos # main.md需要的视频,存储的文件夹,可能没有
                   |
-                  --- xxx.png
+                  --- xxx.flv
 ```
 
 

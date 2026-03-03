@@ -49,6 +49,8 @@ df 札幌冠军赛，#35 败一出局
 
 #### 完整记录
 
+参考b站记录
+
 ##### day1-p1：3mz和皮特互相开爆
 
 ------
@@ -1042,7 +1044,7 @@ xx：感觉我要成🤡了
 
 #### 参考文献
 
-1. b站记录：https://www.bilibili.com/video/BV1y5PoeeEaX
+1. b站记录：https://www.bilibili.com/video/BV1y5PoeeEaX，视频本地留档：[聊天记录.flv](videos/v1.flv)
 2. 贴吧解析札幌huge发挥：https://tieba.baidu.com/p/9517600281
 
 

@@ -1,6 +1,5 @@
 1. 挖好兄弟xzz队友
-3. 3mz锐评卡吧
-4. 3mz烧qq盒
+2. 3mz烧qq盒
 
 
 
@@ -9,9 +8,5 @@
 
 
 - [来点对线🀄图片和文案合集-百度贴吧](https://tieba.baidu.com/p/9933542833?pid=152474065693&cid=0#152474065693)
-- 纱雾：https://tieba.baidu.com/p/9014310848 （23年线下）
-- 前三次锐评卡吧：https://tieba.baidu.com/p/9094476537
-- 锐评卡吧：https://www.bilibili.com/video/BV1boPTzwEAs
-- https://tieba.baidu.com/p/9977272032
 - caca锐评3mz：https://tieba.baidu.com/p/9084702499
 

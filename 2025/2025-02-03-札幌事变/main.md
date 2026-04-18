@@ -1040,7 +1040,7 @@ xx：感觉我要成🤡了
 
 #### 参考文献
 
-1. b站记录：https://www.bilibili.com/video/BV1y5PoeeEaX，视频本地留档：[聊天记录.flv](videos/v1.flv)
+1. b站记录：https://www.bilibili.com/video/BV1y5PoeeEaX，视频本地留档：[聊天记录.mp4](videos/v1.mp4)
 2. 贴吧解析札幌huge发挥：https://tieba.baidu.com/p/9517600281
 
 

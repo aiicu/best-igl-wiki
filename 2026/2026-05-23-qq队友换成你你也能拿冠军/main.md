@@ -46,6 +46,8 @@ bolin：说实话，我是可以去做，我觉得我可以去做那样子，但
 
 ------
 
+时间：2026-05-19
+
 
 
 #### 参考文献
@@ -53,6 +55,7 @@ bolin：说实话，我是可以去做，我觉得我可以去做那样子，但
 1. b站切片：https://www.bilibili.com/video/BV1qUGB6TEky
 2. b站完整切片：https://www.bilibili.com/video/BV1V5GB6hETx
 3. 留档：[BV1qUGB6TEky](videos\BV1qUGB6TEky留档.mp4)
+4. 3mz言论留档：[存档3mz在5-19直播切片评论区里的回复-百度贴吧](https://tieba.baidu.com/p/10739273381?fr=frs)
 
 
 
@@ -86,7 +89,21 @@ bolin：<font color="red">他确实只会一直抽一直抽</font>
 
 ------
 
+时间：2026-05-19
 
 
-[videos/BV1qUGB6TEky留档.mp4]: 
-[\videos\BV1qUGB6TEky留档.mp4]: 
+
+##### DLC2-3mz对过往过错的解构
+
+------
+
+这个典爆出来之后，3mz在切片底下嘴硬回复
+
+解构了自己全部的问题，<font color="red">他觉得他没一点错</font>
+
+具体可以看——参考文献4的贴吧记录帖
+
+------
+
+时间：2026-05-23
+

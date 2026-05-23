@@ -51,6 +51,7 @@ ks：没有啊，北部磨坊一样好啊。你要中不转，他中间加那个
 1. b站切片：[“我只要能拿冠军的那种阵容”](https://www.bilibili.com/video/BV1bkgKz5ECr)
 1. b站录播，p14 , 10.00开始：[【弹幕】天才美少女卡莎2023-11-05 22_15_17顶级瞄准_bilibili](https://www.bilibili.com/video/BV1yu4y177gy?spm_id_from=333.788.videopod.episodes&vd_source=9b7f04241cea83124be2b2943720ccd5&p=14)
 1. 贴吧盘点：[盘点教父三明治的高情商时刻](https://tieba.baidu.com/p/8880639995)
+1. huge言论贴吧留档：[存档3mz在5-19直播切片评论区里的回复-百度贴吧](https://tieba.baidu.com/p/10739273381?fr=frs)
 
 
 

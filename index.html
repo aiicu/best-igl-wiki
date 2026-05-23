@@ -356,6 +356,9 @@
                         <div class="mt-8 sm:mt-12 px-4">
                             <p class="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">快速导航</p>
                             <div class="flex flex-wrap justify-center gap-2">
+                                <button onclick="loadEventByTitle('qq队友换成你你也能拿冠军')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    qq队友换成你你也能拿冠军
+                                </button>
                                 <button onclick="loadEventByTitle('单排手柄上大师')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
                                     单排手柄上大师
                                 </button>
@@ -619,6 +622,15 @@
                 tags: ['虚假宣传'],
                 abstract: 'huge虚假宣传自己单排手柄上大师，实际是借了一个钻二号，双排打到差一把鸡就大师，最后单排一次上大师',
                 path: '2026/2026-02-02-单排手柄上大师/main.md'
+            },
+            {
+                id: '2026-05-23-qq队友换成你你也能拿冠军',
+                year: '2026',
+                date: '2026-05-23',
+                title: 'qq队友换成你你也能拿冠军',
+                tags: ['傲慢'],
+                abstract: '斗鱼录播出 bug，把闭麦的 3mz 与 bolin 谈心录进去了；3mz 认为把 QQ 两个队友换成 bolin 和 jr 也能拿冠军',
+                path: '2026/2026-05-23-qq队友换成你你也能拿冠军/main.md'
             }
         ];
         
@@ -768,6 +780,32 @@
             }
         }
         
+        async function fetchMarkdownContent(path) {
+            const encodedPath = getEncodedPath(path);
+            const cacheBuster = 't=' + Date.now();
+            const urls = [
+                encodedPath + '?' + cacheBuster,
+                'https://raw.githubusercontent.com/aiicu/best-igl-wiki/main/' + encodedPath + '?' + cacheBuster
+            ];
+            let lastError;
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url, { cache: 'no-store' });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return await response.text();
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+            throw lastError;
+        }
+
+        function getEncodedPath(path) {
+            return path.replace(/\\/g, '/').split('/').map(part => encodeURIComponent(part)).join('/');
+        }
+
         async function loadEvent(index) {
             if (index < 0 || index >= events.length) return;
             
@@ -799,7 +837,7 @@
             
             const pdfLink = document.getElementById('eventPdf');
             const pdfPath = event.path.replace(/main\.md$/, 'main.pdf');
-            const encodedPdfPath = pdfPath.split('/').map(part => encodeURIComponent(part)).join('/');
+            const encodedPdfPath = getEncodedPath(pdfPath);
             pdfLink.href = encodedPdfPath;
             fetch(encodedPdfPath, { method: 'HEAD' }).then(response => {
                 if (response.ok) {
@@ -812,10 +850,7 @@
             bodyContainer.innerHTML = '<div class="flex justify-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div></div>';
             
             try {
-                let content;
-                const encodedPath = event.path.split('/').map(part => encodeURIComponent(part)).join('/');
-                const response = await fetch(encodedPath + '?t=' + Date.now());
-                content = await response.text();
+                const content = await fetchMarkdownContent(event.path);
                 
                 const pathParts = event.path.replace(/\\/g, '/').split('/');
                 let basePath = pathParts.slice(0, -1).join('/');
@@ -917,7 +952,7 @@
                     fullSrc = src;
                 } else {
                     const cleanBase = basePath.replace(/^\//, '').replace(/\/$/, '');
-                    const cleanSrc = src.replace(/^\//, '');
+                    const cleanSrc = src.replace(/\\/g, '/').replace(/^\//, '');
                     fullSrc = cleanBase + '/' + cleanSrc;
                 }
                 return `<img src="${fullSrc}" alt="${alt}" class="max-w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition" onclick="openImageModal('${fullSrc}', '${alt}')" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none;" class="text-red-500 text-sm mt-2">图片加载失败: ${fullSrc}</div>`;
@@ -931,7 +966,7 @@
                     fullSrc = src;
                 } else {
                     const cleanBase = basePath.replace(/^\//, '').replace(/\/$/, '');
-                    const cleanSrc = src.replace(/^\//, '');
+                    const cleanSrc = src.replace(/\\/g, '/').replace(/^\//, '');
                     fullSrc = cleanBase + '/' + cleanSrc;
                 }
                 return `<img src="${fullSrc}" alt="${alt}" class="max-w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition" onclick="openImageModal('${fullSrc}', '${alt}')" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none;" class="text-red-500 text-sm mt-2">图片加载失败: ${fullSrc}</div>`;
@@ -947,7 +982,7 @@
                         fullSrc = src;
                     } else {
                         const cleanBase = basePath.replace(/^\//, '').replace(/\/$/, '');
-                        const cleanSrc = src.replace(/^\//, '');
+                        const cleanSrc = src.replace(/\\/g, '/').replace(/^\//, '');
                         fullSrc = cleanBase + '/' + cleanSrc;
                     }
                     const ext = isVideo[1].toLowerCase();

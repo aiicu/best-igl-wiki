@@ -12,7 +12,9 @@ best igl：
 
 ![DreamFire_3Mz_at_the_ALGS_Birmingham_Championship](images/DreamFire_3Mz_at_the_ALGS_Birmingham_Championship.jpg)
 
+“键鼠证明手伤，手柄证明脑伤。名次证明营 销，粉丝大脑裹脚。大圈看不懂，小圈就过载。手柄强名次差，手柄弱名次差。枪法没 指挥，指挥没枪法。粘上甩不开，甩开沾不上。”
 
+——by 圣诗【小黑盒】
 
 ### 记录模板
 

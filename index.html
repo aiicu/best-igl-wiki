@@ -365,8 +365,8 @@
                                 <button onclick="loadEventByTitle('札幌事变')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
                                     札幌事变
                                 </button>
-                                <button onclick="loadEventByTitle('别roll我们我们进线下了你解说第1人')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
-                                    别roll我们我们进线下了你解说第1人
+                                <button onclick="loadEventByTitle('SAF买TSM赢')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    SAF买TSM赢
                                 </button>
                                 <button onclick="loadEventByTitle('诅咒级')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
                                     诅咒级
@@ -374,10 +374,21 @@
                             </div>
                         </div>
                         
-                        <div class="mt-12">
-                            <a href="https://github.com/aiicu/best-igl-wiki" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80 transition">
-                                <img src="https://img.shields.io/github/stars/aiicu/best-igl-wiki?style=flat&logo=github&color=24292f&logoColor=white&labelColor=24292f&label=best%20igl%20wiki" alt="GitHub stars">
+                        <div class="mt-12 flex flex-col items-center">
+                            <a href="https://github.com/aiicu/best-igl-wiki" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 sm:text-sm">
+                                <svg class="h-4 w-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+                                </svg>
+                                <span>best igl wiki</span>
                             </a>
+                            <div id="tigerSongMenu" class="relative mt-3 flex w-full max-w-3xl justify-center">
+                                <button id="tigerSongToggle" type="button" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-blue-500 hover:text-blue-600">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Zm12-2c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Z"/>
+                                    </svg>
+                                    <span>虎歌</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
@@ -514,6 +525,15 @@
                 tags: ['爱粉丝', '谦逊'],
                 abstract: '3mz对卡吧态度：善良->比赛讨论少了，不太纯了->不再容忍',
                 path: '2023/2023-04-29-3mz锐评卡吧/main.md'
+            },
+            {
+                id: '2023-09-11-SAF买的TSM赢',
+                year: '2023',
+                date: '2023-09-11',
+                title: 'SAF买TSM赢',
+                tags: ['口无遮拦'],
+                abstract: '三明治谈伯明翰决赛最后一把，怀疑 SAF 买的 TSM 赢，称抽三个弹幕上去都打赢了',
+                path: '2023/2023-09-11-SAF买的TSM赢/main.md'
             },
             {
                 id: '2023-10-17-我后面是整个cnapex',
@@ -788,6 +808,104 @@
                 console.error('Event not found:', title);
             }
         }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function cleanMarkdownInline(value) {
+            return value.replace(/\*\*/g, '').trim();
+        }
+
+        function parseTigerSongTable(markdown) {
+            return markdown.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.startsWith('|') && !/^\|\s*-/.test(line))
+                .map(line => line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(cell => cleanMarkdownInline(cell)))
+                .filter(cells => cells.length >= 4 && cells[0] !== '作品')
+                .map(cells => ({
+                    title: cells[0],
+                    archived: cells[1],
+                    author: cells[2],
+                    bv: cells[3]
+                }));
+        }
+
+        function renderTigerSongsTable(rows) {
+            const bodyRows = rows.map(row => {
+                const videoUrl = `https://www.bilibili.com/video/${encodeURIComponent(row.bv)}`;
+                const archivedClass = row.archived === '是' ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-500';
+                const archivedText = row.archived === '是' ? '已补档' : '未补档';
+                return `
+                    <tr class="hover:bg-blue-50/40">
+                        <td class="border border-gray-300 px-3 py-2 text-left font-medium text-gray-800"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:underline">${escapeHtml(row.title)}</a></td>
+                        <td class="border border-gray-300 px-3 py-2 text-center"><span class="inline-flex rounded-full px-2 py-0.5 text-xs ${archivedClass}">${archivedText}</span></td>
+                        <td class="border border-gray-300 px-3 py-2 text-left text-gray-700">${escapeHtml(row.author)}</td>
+                        <td class="border border-gray-300 px-3 py-2 text-center"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 hover:underline">${escapeHtml(row.bv)}</a></td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <table class="w-full min-w-[720px] border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-left font-semibold text-gray-800">作品</th>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-gray-800">补档</th>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-left font-semibold text-gray-800">作者</th>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-gray-800">B站链接</th>
+                        </tr>
+                    </thead>
+                    <tbody>${bodyRows}</tbody>
+                </table>
+            `;
+        }
+
+        async function showTigerSongsTable() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('eventContent').classList.remove('hidden');
+            document.getElementById('eventBody').classList.add('hidden');
+            document.getElementById('backToHomeBtn').classList.add('hidden');
+            document.getElementById('prevBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('xlsxMainContent').classList.remove('hidden');
+            document.getElementById('eventContentCard').classList.add('hidden');
+
+            currentIndex = -1;
+            renderEventList();
+
+            const xlsxContent = document.getElementById('xlsxMainContent');
+            const eventContent = document.getElementById('eventContent');
+            if (xlsxContent.parentElement !== eventContent) {
+                eventContent.appendChild(xlsxContent);
+            }
+
+            const titleEl = document.getElementById('xlsxMainTitle');
+            const tableContainer = document.getElementById('xlsxMainTableContainer');
+            titleEl.textContent = '虎歌作品表';
+            tableContainer.innerHTML = '<div class="text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div><p class="text-sm text-gray-500 mt-2">加载中...</p></div>';
+
+            document.getElementById('breadcrumb').innerHTML = `
+                <span class="text-gray-400">虎歌</span>
+                <span class="mx-2 text-gray-300">/</span>
+                <span class="font-medium text-gray-800">作品表</span>
+            `;
+
+            try {
+                const markdown = await fetchMarkdownContent('虎歌/main.md');
+                const rows = parseTigerSongTable(markdown);
+                tableContainer.innerHTML = renderTigerSongsTable(rows);
+            } catch (error) {
+                tableContainer.innerHTML = `<p class="text-red-500 text-sm">加载失败: ${error.message}</p>`;
+            }
+        }
+
         
         async function fetchMarkdownContent(path) {
             const encodedPath = getEncodedPath(path);
@@ -1117,6 +1235,8 @@
                 loadEvent(currentIndex + 1);
             });
             
+            document.getElementById('tigerSongToggle').addEventListener('click', showTigerSongsTable);
+
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobileOverlay');

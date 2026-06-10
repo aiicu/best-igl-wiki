@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best IGL Wiki</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .content-area::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .content-area::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .tag-red { background: #fee2e2; color: #dc2626; }
+        .tag-green { background: #dcfce7; color: #16a34a; }
+        .tag-blue { background: #dbeafe; color: #2563eb; }
+        .tag-yellow { background: #fef3c7; color: #d97706; }
+        .tag-purple { background: #f3e8ff; color: #9333ea; }
+        .tag-gray { background: #f3f4f6; color: #6b7280; }
+        
+        .event-card {
+            transition: all 0.2s ease;
+        }
+        
+        .event-card:hover {
+            transform: translateX(4px);
+        }
+        
+        .event-card.active {
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .event-card.active .event-date {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .highlight-red { color: #dc2626; font-weight: 600; }
+        .highlight-green { color: #16a34a; font-weight: 600; }
+        .highlight-blue { color: #2563eb; font-weight: 600; }
+        
+        .markdown-body {
+            background: transparent;
+        }
+        
+        .markdown-body h1 {
+            font-size: 2em;
+            border-bottom: 3px solid #e5e7eb;
+            padding-bottom: 0.3em;
+            margin-bottom: 0.8em;
+        }
+        
+        .markdown-body h2 {
+            font-size: 1.5em;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.2em;
+            margin-top: 1.5em;
+            margin-bottom: 0.6em;
+        }
+        
+        .markdown-body h3 {
+            font-size: 1.25em;
+            margin-top: 1.2em;
+            margin-bottom: 0.5em;
+        }
+        
+        .markdown-body h4 {
+            font-size: 1.1em;
+            margin-top: 1em;
+            margin-bottom: 0.4em;
+        }
+        
+        .markdown-body blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1em;
+            color: #4b5563;
+            background: #f8fafc;
+            padding: 1em;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .markdown-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 1em 0;
+            cursor: zoom-in;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .markdown-body img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+        }
+        
+        .markdown-body hr {
+            border: none;
+            border-top: 2px dashed #e5e7eb;
+            margin: 2em 0;
+        }
+        
+        .markdown-body a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+        
+        .markdown-body ul, .markdown-body ol {
+            padding-left: 2em;
+            margin: 0.5em 0;
+        }
+        
+        .markdown-body li {
+            margin: 0.05em 0;
+            line-height: 1.4;
+        }
+        
+        .markdown-body code {
+            background: #f3f4f6;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        .markdown-body pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1em;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .markdown-body ul {
+            list-style-type: disc;
+            padding-left: 2em;
+            margin: 0.5em 0;
+        }
+        
+        .markdown-body ol {
+            list-style-type: decimal;
+            padding-left: 2em;
+            margin: 0.5em 0;
+        }
+        
+        .markdown-body ul li, .markdown-body ol li {
+            display: list-item;
+            margin: 0.05em 0;
+            line-height: 1.4;
+        }
+        
+        .markdown-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 1em 0;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 1.25rem;
+            top: 2.5rem;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+        
+        @media (max-width: 1023px) {
+            .markdown-body {
+                font-size: 0.95rem;
+            }
+            
+            .markdown-body p {
+                line-height: 1.7;
+            }
+            
+            #xlsxMainTableContainer {
+                max-width: 100vw !important;
+                margin-left: -1rem;
+                margin-right: -1rem;
+            }
+            
+            #xlsxMainTableContainer table {
+                font-size: 0.75rem;
+            }
+            
+            #xlsxMainTableContainer th,
+            #xlsxMainTableContainer td {
+                padding: 0.25rem 0.5rem;
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .markdown-body {
+                font-size: 0.9rem;
+            }
+            
+            #prevBtn, #nextBtn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+            
+            #xlsxMainTableContainer table {
+                font-size: 0.7rem;
+            }
+            
+            #xlsxMainTableContainer th,
+            #xlsxMainTableContainer td {
+                padding: 0.2rem 0.4rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-80 bg-slate-900 text-white flex flex-col flex-shrink-0 hidden lg:flex transform -translate-x-full lg:transform-none fixed lg:static inset-y-0 left-0 z-50 transition-transform duration-300" id="sidebar">
+            <div class="p-6 border-b border-slate-700">
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    <span class="text-2xl">🏆</span>
+                    <span>Best IGL Wiki</span>
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">CNAPEX 唯一 Best IGL</p>
+            </div>
+            
+            <div class="p-4 border-b border-slate-700">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="搜索事件..." 
+                        class="w-full bg-slate-800 text-white px-4 py-2 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500"
+                    >
+                    <svg class="absolute left-3 top-2.5 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="px-4 py-3 border-b border-slate-700">
+                <p class="text-xs text-slate-400 mb-2 uppercase tracking-wider">标签筛选</p>
+                <div class="flex flex-wrap gap-2" id="tagFilters">
+                    <button class="tag-filter px-2 py-1 text-xs rounded-full bg-slate-700 hover:bg-slate-600 transition" data-tag="all">全部</button>
+                </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto sidebar p-4" id="eventList">
+            </div>
+            
+            <div class="p-4 border-t border-slate-700 text-xs text-slate-500">
+                <a href="https://tieba.baidu.com/p/10527778972" target="_blank" class="flex items-center gap-1 hover:text-blue-400 transition">
+                    <span>📌 贴吧地址</span>
+                </a>
+            </div>
+        </aside>
+        
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-4">
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div id="breadcrumb" class="text-sm text-gray-600">
+                        <span class="text-gray-400">选择一个事件开始浏览</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="prevBtn" class="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        ← 上一个
+                    </button>
+                    <button id="nextBtn" class="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        下一个 →
+                    </button>
+                </div>
+            </header>
+            
+            <div class="flex-1 overflow-y-auto content-area bg-slate-50" id="contentArea">
+                <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+                    <div id="welcomeScreen" class="text-center py-12 sm:py-20">
+                        <div class="text-4xl sm:text-6xl mb-4 sm:mb-6">📚</div>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">欢迎来到 Best IGL Wiki</h2>
+                        <p class="text-gray-600 mb-6 sm:mb-8 max-w-lg mx-auto px-4">
+                            专属于 CNAPEX 唯一 Best IGL —— 3mz 的 wiki
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto px-4">
+                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
+                                <div class="text-2xl sm:text-3xl mb-2">🎯</div>
+                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">事件记录</h3>
+                                <p class="text-xs sm:text-sm text-gray-500 mt-1">按时间线整理的所有事件</p>
+                            </div>
+                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
+                                <div class="text-2xl sm:text-3xl mb-2">🏷️</div>
+                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">标签分类</h3>
+                                <p class="text-xs sm:text-sm text-gray-500 mt-1">高情商、爱同事、爱队友等</p>
+                            </div>
+                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
+                                <div class="text-2xl sm:text-3xl mb-2">📖</div>
+                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">完整记录</h3>
+                                <p class="text-xs sm:text-sm text-gray-500 mt-1">详细的事件经过和参考文献</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 sm:mt-12 px-4">
+                            <p class="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">快速导航</p>
+                            <div class="flex flex-wrap justify-center gap-2">
+                                <button onclick="loadEventByTitle('qq队友换成你你也能拿冠军')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    qq队友换成你你也能拿冠军
+                                </button>
+                                <button onclick="loadEventByTitle('单排手柄上大师')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    单排手柄上大师
+                                </button>
+                                <button onclick="loadEventByTitle('札幌事变')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    札幌事变
+                                </button>
+                                <button onclick="loadEventByTitle('SAF买TSM赢')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    SAF买TSM赢
+                                </button>
+                                <button onclick="loadEventByTitle('诅咒级')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
+                                    诅咒级
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12 flex flex-col items-center">
+                            <a href="https://github.com/aiicu/best-igl-wiki" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 sm:text-sm">
+                                <svg class="h-4 w-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+                                </svg>
+                                <span>best igl wiki</span>
+                            </a>
+                            <div id="tigerSongMenu" class="relative mt-3 flex w-full max-w-3xl justify-center">
+                                <button id="tigerSongToggle" type="button" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-blue-500 hover:text-blue-600">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Zm12-2c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Z"/>
+                                    </svg>
+                                    <span>虎歌</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="eventContent" class="hidden">
+                        <div id="eventContentCard" class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-4 sm:p-6">
+                                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center gap-2 text-blue-300 text-xs sm:text-sm mb-1 sm:mb-2">
+                                            <span id="eventDate"></span>
+                                            <span>·</span>
+                                            <span id="eventYear"></span>
+                                        </div>
+                                        <h1 id="eventTitle" class="text-xl sm:text-2xl font-bold"></h1>
+                                        <p id="eventAbstract" class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed"></p>
+                                    </div>
+                                    <div class="flex flex-col items-start sm:items-end gap-2">
+                                        <div id="eventTags" class="flex flex-wrap gap-1.5 sm:gap-2 sm:justify-end max-w-full sm:max-w-xs"></div>
+                                        <a id="eventPdf" class="hidden mt-1 sm:mt-2 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm rounded-lg transition flex items-center gap-1.5 sm:gap-2" target="_blank">
+                                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+                                            PDF
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 sm:p-6 lg:p-8 markdown-body" id="eventBody"></div>
+                            
+                            <div id="xlsxMainContent" class="hidden p-4 sm:p-6 lg:p-8">
+                                <div class="flex items-center justify-between mb-4 pb-4">
+                                    <h2 id="xlsxMainTitle" class="text-lg sm:text-xl font-bold text-gray-800"></h2>
+                                    <button onclick="closeXlsxMainContent()" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg text-xs sm:text-sm flex items-center gap-2 transition shadow-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                        关闭表格
+                                    </button>
+                                </div>
+                                <div id="xlsxMainTableContainer" class="overflow-x-auto -mx-4 sm:mx-0" style="max-width: 100%;"></div>
+                            </div>
+                            
+                            <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-8" id="backToHomeBtn">
+                                <button onclick="showWelcomeScreen()" class="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition border border-gray-200 hover:border-blue-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                    </svg>
+                                    回到首页
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="xlsxPanel" class="fixed right-0 top-0 h-full w-96 bg-white border-l border-gray-200 shadow-lg transform translate-x-full transition-transform duration-300 z-30 overflow-hidden flex flex-col">
+        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <h3 class="font-semibold">数据对比分析</h3>
+            </div>
+            <button onclick="closeXlsxPanel()" class="p-1 hover:bg-white/20 rounded">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4">
+            <div id="xlsxFileList" class="space-y-2">
+                <p class="text-sm text-gray-500 mb-3">点击文件查看数据对比</p>
+            </div>
+            
+        </div>
+    </div>
+    
+    <button id="xlsxToggleBtn" onclick="toggleXlsxPanel()" class="fixed right-4 top-1/2 -translate-y-1/2 z-20 bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-l-xl shadow-lg transition-all hover:pr-5">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+    </button>
+    
+    <div id="imageModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center" onclick="closeImageModal()">
+        <div class="relative max-w-[95vw] max-h-[95vh] p-4" onclick="event.stopPropagation()">
+            <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 transition p-2">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <img id="modalImage" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-lg">
+            <p id="modalCaption" class="text-white text-center mt-4 text-lg"></p>
+        </div>
+    </div>
+    
+    <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+
+    <script>
+        const events = [
+            {
+                id: '2016-02-24-小兔子乖乖把腿掰开',
+                year: '2016',
+                date: '2016-02-24',
+                title: '小兔子乖乖把腿掰开',
+                tags: ['x压抑'],
+                abstract: '18岁的huge x压抑，在贴吧疯狂回复"小兔子乖乖把腿掰开，不掰不掰就不掰，套套也不带"',
+                path: '2020-/2016-02-24-小兔子乖乖把腿掰开/main.md'
+            },
+            {
+                id: '2022-01-18-ALGS冠军',
+                year: '2022',
+                date: '2022-01-18',
+                title: 'ALGS冠军',
+                tags: ['造谣', '虚假宣传'],
+                abstract: '3mz 虚假宣传 ALGS第一赛季线下赛-亚太南分区冠军 为 ALGS冠军，视频虚假宣传+b站/斗鱼简介作假',
+                path: '2022/2022-01-18-ALGS冠军/main.md'
+            },
+            {
+                id: '2022-12-30-比赛不让看手机，我们职业化',
+                year: '2022',
+                date: '2022-12-30',
+                title: '比赛不让看手机，我们职业化',
+                tags: ['爱同事'],
+                abstract: '3mz告诉当时同样在搞职业化的卡莎："卡哥，打比赛不让看手机。我们职业化"',
+                path: '2022/2022-12-30-比赛不让看手机，我们职业化/main.md'
+            },
+            {
+                id: '2023-04-29-3mz锐评卡吧',
+                year: '2023',
+                date: '2023-04-29',
+                title: '3mz锐评卡吧',
+                tags: ['爱粉丝', '谦逊'],
+                abstract: '3mz对卡吧态度：善良->比赛讨论少了，不太纯了->不再容忍',
+                path: '2023/2023-04-29-3mz锐评卡吧/main.md'
+            },
+            {
+                id: '2023-09-11-SAF买的TSM赢',
+                year: '2023',
+                date: '2023-09-11',
+                title: 'SAF买TSM赢',
+                tags: ['口无遮拦'],
+                abstract: '三明治谈伯明翰决赛最后一把，怀疑 SAF 买的 TSM 赢，称抽三个弹幕上去都打赢了',
+                path: '2023/2023-09-11-SAF买的TSM赢/main.md'
+            },
+            {
+                id: '2023-10-17-我后面是整个cnapex',
+                year: '2023',
+                date: '2023-10-17',
+                title: '我后面是整个cnapex',
+                tags: ['傲慢'],
+                abstract: 'huge微信聊天锐评："笑死，我后面是整个cnapex，确实，我前面没人啊"',
+                path: '2023/2023-10-17-我后面是整个cnapex/main.md'
+            },
+            {
+                id: '2023-11-05-我只要能拿冠军的那种阵容',
+                year: '2023',
+                date: '2023-11-05',
+                title: '我只要能拿冠军的那种阵容',
+                tags: ['爱同事', '高情商'],
+                abstract: '卡莎给三明治推荐阵容，世界第七的三明治提醒禁赛半年的卡莎：我只要能拿冠军的那种阵容',
+                path: '2023/2023-11-05-我只要能拿冠军的那种阵容/main.md'
+            },
+            {
+                id: '2023-11-15-我一定会夺冠的-我把他们都熬死',
+                year: '2023',
+                date: '2023-11-15',
+                title: '我一定会夺冠的-我把他们都熬死',
+                tags: ['赖着不死'],
+                abstract: 'huge认为自己一定能拿到ALGS冠军，因为永远不死，永远都有机会',
+                path: '2023/2023-11-15-我一定会夺冠的-我把他们都熬死/main.md'
+            },
+            {
+                id: '2023-12-02-皮m性感',
+                year: '2023',
+                date: '2023-12-02',
+                title: '皮m性感',
+                tags: ['爱同事妈'],
+                abstract: '3mz夸皮m今天穿的真性感',
+                path: '2023/2023-12-02-皮m性感/main.md'
+            },
+            {
+                id: '2023-12-04-卡勾求3mz办事',
+                year: '2023',
+                date: '2023-12-04',
+                title: '卡勾求3mz办事',
+                tags: ['爱同事', '傲慢'],
+                abstract: 'huge幻想自己落魄没进世界赛但卡勾成功进世界赛，幻想卡勾求他办事',
+                path: '2023/2023-12-04-卡勾求3mz办事/main.md'
+            },
+            {
+                id: '2023-12-11-诅咒级',
+                year: '2023',
+                date: '2023-12-11',
+                title: '诅咒级',
+                tags: ['爱国', '爱同事'],
+                abstract: '诅咒cn国家队，为国出征=公费旅游',
+                path: '2023/2023-12-11-诅咒级/main.md'
+            },
+            {
+                id: '2024-04-15-td妈',
+                year: '2024',
+                date: '2024-04-15',
+                title: 'td妈',
+                tags: ['胎毒'],
+                abstract: 'huge在dc认下百一td老婆小森作为妈，小森在b站发她儿子3mz和女儿小葵的姐弟合照',
+                path: '2024/2024-04-15-td妈/main.md'
+            },
+            {
+                id: '2024-06-19-别roll我们我们进线下了你解说第1人',
+                year: '2024',
+                date: '2024-06-19',
+                title: '别roll我们我们进线下了你解说第1人',
+                tags: ['傲慢'],
+                abstract: '3mz频繁换点，扰乱w的训练节奏，飞狙要来roll df；3mz发言：别roll我们我们进线下了你解说第1人。钱和荣誉总得有1个不是？',
+                path: '2024/2024-06-19-别roll我们我们进线下了你解说第1人/main.md'
+            },
+            {
+                id: '2024-08-04-75强度',
+                year: '2024',
+                date: '2024-08-04',
+                title: '75%强度',
+                tags: ['爱同事'],
+                abstract: '宣称2024EWC决赛没有algs高，约等于75%的algs决赛',
+                path: '2024/2024-08-04-75强度/main.md'
+            },
+            {
+                id: '2025-02-03-札幌事变',
+                year: '2025',
+                date: '2025-02-03',
+                title: '札幌事变',
+                tags: ['爱队友', '白莲花', '高情商'],
+                abstract: 'DF 札幌冠军赛#35出局，3mz提前回国开播指责队友，皮特放聊天记录开爆',
+                path: '2025/2025-02-03-札幌事变/main.md'
+            },
+            {
+                id: '2025-06-15-我感觉这种赛制它就是不如algs',
+                year: '2025',
+                date: '2025-06-15',
+                title: '我感觉这种赛制它就是不如algs',
+                tags: ['爱同事'],
+                abstract: 'huge质疑25ewc含金量，因为25ewc赛制还是10场制',
+                path: '2025/2025-06-15-我感觉这种赛制它就是不如algs/main.md'
+            },
+            {
+                id: '2025-08-12-晦气级',
+                year: '2025',
+                date: '2025-08-12',
+                title: '晦气级',
+                tags: ['爱同事'],
+                abstract: 'huge打出174伤害，说这伤害沾点晦气了，指队友皮特174晦气',
+                path: '2025/2025-08-12-晦气级/main.md'
+            },
+            {
+                id: '2026-02-02-单排手柄上大师',
+                year: '2026',
+                date: '2026-02-02',
+                title: '单排手柄上大师',
+                tags: ['虚假宣传'],
+                abstract: 'huge虚假宣传自己单排手柄上大师，实际是借了一个钻二号，双排打到差一把鸡就大师，最后单排一次上大师',
+                path: '2026/2026-02-02-单排手柄上大师/main.md'
+            },
+            {
+                id: '2026-05-23-qq队友换成你你也能拿冠军',
+                year: '2026',
+                date: '2026-05-23',
+                title: 'qq队友换成你你也能拿冠军',
+                tags: ['傲慢'],
+                abstract: '斗鱼录播出 bug，把闭麦的 3mz 与 bolin 谈心录进去了；3mz 认为把 QQ 两个队友换成 bolin 和 jr 也能拿冠军',
+                path: '2026/2026-05-23-qq队友换成你你也能拿冠军/main.md'
+            }
+        ];
+        
+        let currentIndex = -1;
+        let currentFilter = 'all';
+        let searchQuery = '';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            renderEventList();
+            renderTagFilters();
+            setupEventListeners();
+        });
+        
+        function renderTagFilters() {
+            const allTags = [...new Set(events.flatMap(e => e.tags))];
+            const container = document.getElementById('tagFilters');
+            
+            allTags.forEach(tag => {
+                const btn = document.createElement('button');
+                btn.className = 'tag-filter px-2 py-1 text-xs rounded-full bg-slate-700 hover:bg-slate-600 transition';
+                btn.dataset.tag = tag;
+                btn.textContent = tag;
+                container.appendChild(btn);
+            });
+        }
+        
+        function renderEventList() {
+            const container = document.getElementById('eventList');
+            container.innerHTML = '';
+            
+            const filteredEvents = events.filter((event, index) => {
+                const matchesSearch = searchQuery === '' || 
+                    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    event.abstract.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    event.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+                
+                const matchesTag = currentFilter === 'all' || event.tags.includes(currentFilter);
+                
+                return matchesSearch && matchesTag;
+            });
+            
+            const grouped = filteredEvents.reduce((acc, event) => {
+                if (!acc[event.year]) acc[event.year] = [];
+                acc[event.year].push(event);
+                return acc;
+            }, {});
+            
+            Object.keys(grouped).sort((a, b) => b - a).forEach(year => {
+                const yearSection = document.createElement('div');
+                yearSection.className = 'mb-6';
+                
+                const yearHeader = document.createElement('div');
+                yearHeader.className = 'flex items-center gap-2 mb-3 px-2';
+                yearHeader.innerHTML = `
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">${year}</span>
+                    <div class="flex-1 h-px bg-slate-700"></div>
+                `;
+                yearSection.appendChild(yearHeader);
+                
+                grouped[year].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                grouped[year].forEach(event => {
+                    const eventIndex = events.findIndex(e => e.id === event.id);
+                    const card = document.createElement('div');
+                    card.className = `event-card p-3 rounded-lg cursor-pointer mb-2 ${eventIndex === currentIndex ? 'active' : 'hover:bg-slate-800'}`;
+                    card.onclick = () => loadEvent(eventIndex);
+                    
+                    card.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-2 h-2 rounded-full mt-2 ${getTagColor(event.tags[0])}"></div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-medium text-sm truncate">${event.title}</h3>
+                                <p class="event-date text-xs mt-1 ${eventIndex === currentIndex ? 'text-white/70' : 'text-slate-500'}">${event.date}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    yearSection.appendChild(card);
+                });
+                
+                container.appendChild(yearSection);
+            });
+            
+            if (filteredEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-slate-500">
+                        <p>没有找到匹配的事件</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function getTagColor(tag) {
+            const colors = {
+                '爱国': 'bg-red-500',
+                '爱同事': 'bg-red-500',
+                '爱队友': 'bg-red-500',
+                '爱同事妈': 'bg-red-500',
+                '爱粉丝': 'bg-green-500',
+                '虚假宣传': 'bg-purple-500',
+                '造谣': 'bg-purple-500',
+                '傲慢': 'bg-yellow-500',
+                '高情商': 'bg-blue-500',
+                'x压抑': 'bg-pink-500',
+                '胎毒': 'bg-red-600',
+                '赖着不死': 'bg-orange-500',
+                '白莲花': 'bg-cyan-500',
+                '谦逊': 'bg-green-500'
+            };
+            return colors[tag] || 'bg-gray-500';
+        }
+        
+        function getTagClass(tag) {
+            const classes = {
+                '爱国': 'tag-red',
+                '爱同事': 'tag-red',
+                '爱队友': 'tag-red',
+                '爱同事妈': 'tag-red',
+                '爱粉丝': 'tag-green',
+                '虚假宣传': 'tag-purple',
+                '造谣': 'tag-purple',
+                '傲慢': 'tag-yellow',
+                '高情商': 'tag-blue',
+                'x压抑': 'tag-red',
+                '胎毒': 'tag-red',
+                '赖着不死': 'tag-orange',
+                '白莲花': 'tag-blue',
+                '谦逊': 'tag-green'
+            };
+            return classes[tag] || 'tag-gray';
+        }
+        
+        function showWelcomeScreen() {
+            document.getElementById('eventContent').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('breadcrumb').innerHTML = '<span class="text-gray-400">选择一个事件开始浏览</span>';
+            currentIndex = -1;
+            renderEventList();
+        }
+        
+        function loadEventByTitle(title) {
+            const index = events.findIndex(e => e.title === title);
+            if (index !== -1) {
+                loadEvent(index);
+            } else {
+                console.error('Event not found:', title);
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function cleanMarkdownInline(value) {
+            return value.replace(/\*\*/g, '').trim();
+        }
+
+        function parseTigerSongTable(markdown) {
+            return markdown.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.startsWith('|') && !/^\|\s*-/.test(line))
+                .map(line => line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(cell => cleanMarkdownInline(cell)))
+                .filter(cells => cells.length >= 4 && cells[0] !== '作品')
+                .map(cells => ({
+                    title: cells[0],
+                    archived: cells[1],
+                    author: cells[2],
+                    bv: cells[3]
+                }));
+        }
+
+        function renderTigerSongsTable(rows) {
+            const bodyRows = rows.map(row => {
+                const videoUrl = `https://www.bilibili.com/video/${encodeURIComponent(row.bv)}`;
+                const archivedClass = row.archived === '是' ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-500';
+                const archivedText = row.archived === '是' ? '已补档' : '未补档';
+                return `
+                    <tr class="hover:bg-blue-50/40">
+                        <td class="border border-gray-300 px-3 py-2 text-left font-medium text-gray-800"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:underline">${escapeHtml(row.title)}</a></td>
+                        <td class="border border-gray-300 px-3 py-2 text-center"><span class="inline-flex rounded-full px-2 py-0.5 text-xs ${archivedClass}">${archivedText}</span></td>
+                        <td class="border border-gray-300 px-3 py-2 text-left text-gray-700">${escapeHtml(row.author)}</td>
+                        <td class="border border-gray-300 px-3 py-2 text-center"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 hover:underline">${escapeHtml(row.bv)}</a></td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <table class="w-full min-w-[720px] border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-left font-semibold text-gray-800">作品</th>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-gray-800">补档</th>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-left font-semibold text-gray-800">作者</th>
+                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-gray-800">B站链接</th>
+                        </tr>
+                    </thead>
+                    <tbody>${bodyRows}</tbody>
+                </table>
+            `;
+        }
+
+        async function showTigerSongsTable() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('eventContent').classList.remove('hidden');
+            document.getElementById('eventBody').classList.add('hidden');
+            document.getElementById('backToHomeBtn').classList.add('hidden');
+            document.getElementById('prevBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('xlsxMainContent').classList.remove('hidden');
+            document.getElementById('eventContentCard').classList.add('hidden');
+
+            currentIndex = -1;
+            renderEventList();
+
+            const xlsxContent = document.getElementById('xlsxMainContent');
+            const eventContent = document.getElementById('eventContent');
+            if (xlsxContent.parentElement !== eventContent) {
+                eventContent.appendChild(xlsxContent);
+            }
+
+            const titleEl = document.getElementById('xlsxMainTitle');
+            const tableContainer = document.getElementById('xlsxMainTableContainer');
+            titleEl.textContent = '虎歌作品表';
+            tableContainer.innerHTML = '<div class="text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div><p class="text-sm text-gray-500 mt-2">加载中...</p></div>';
+
+            document.getElementById('breadcrumb').innerHTML = `
+                <span class="text-gray-400">虎歌</span>
+                <span class="mx-2 text-gray-300">/</span>
+                <span class="font-medium text-gray-800">作品表</span>
+            `;
+
+            try {
+                const markdown = await fetchMarkdownContent('虎歌/main.md');
+                const rows = parseTigerSongTable(markdown);
+                tableContainer.innerHTML = renderTigerSongsTable(rows);
+            } catch (error) {
+                tableContainer.innerHTML = `<p class="text-red-500 text-sm">加载失败: ${error.message}</p>`;
+            }
+        }
+
+        
+        async function fetchMarkdownContent(path) {
+            const encodedPath = getEncodedPath(path);
+            const cacheBuster = 't=' + Date.now();
+            const urls = [
+                encodedPath + '?' + cacheBuster,
+                'https://raw.githubusercontent.com/aiicu/best-igl-wiki/main/' + encodedPath + '?' + cacheBuster
+            ];
+            let lastError;
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url, { cache: 'no-store' });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return await response.text();
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+            throw lastError;
+        }
+
+        function getEncodedPath(path) {
+            return path.replace(/\\/g, '/').split('/').map(part => encodeURIComponent(part)).join('/');
+        }
+
+        async function loadEvent(index) {
+            if (index < 0 || index >= events.length) return;
+            
+            const xlsxContent = document.getElementById('xlsxMainContent');
+            if (!xlsxContent.classList.contains('hidden')) {
+                closeXlsxMainContent(false);
+            }
+            
+            currentIndex = index;
+            const event = events[index];
+            
+            renderEventList();
+            updateBreadcrumb(event);
+            updateNavigationButtons();
+            
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('eventContent').classList.remove('hidden');
+            document.getElementById('eventContent').classList.add('fade-in');
+            
+            document.getElementById('eventDate').textContent = event.date;
+            document.getElementById('eventYear').textContent = event.year + '年';
+            document.getElementById('eventTitle').textContent = event.title;
+            document.getElementById('eventAbstract').textContent = event.abstract;
+            
+            const tagsContainer = document.getElementById('eventTags');
+            tagsContainer.innerHTML = event.tags.map(tag => 
+                `<span class="px-2 py-1 text-xs rounded-full bg-white/20">${tag}</span>`
+            ).join('');
+            
+            const pdfLink = document.getElementById('eventPdf');
+            const pdfPath = event.path.replace(/main\.md$/, 'main.pdf');
+            const encodedPdfPath = getEncodedPath(pdfPath);
+            pdfLink.href = encodedPdfPath;
+            fetch(encodedPdfPath, { method: 'HEAD' }).then(response => {
+                if (response.ok) {
+                    pdfLink.classList.remove('hidden');
+                }
+            }).catch(() => {
+            });
+            
+            const bodyContainer = document.getElementById('eventBody');
+            bodyContainer.innerHTML = '<div class="flex justify-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div></div>';
+            
+            try {
+                const content = await fetchMarkdownContent(event.path);
+                
+                const pathParts = event.path.replace(/\\/g, '/').split('/');
+                let basePath = pathParts.slice(0, -1).join('/');
+                if (!basePath.startsWith('/')) {
+                    basePath = '/' + basePath;
+                }
+                const html = markdownToHtml(content, basePath, event.title);
+                bodyContainer.innerHTML = html;
+            } catch (error) {
+                bodyContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <p>加载内容失败</p>
+                        <p class="text-sm mt-2">${error.message}</p>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('contentArea').scrollTop = 0;
+            
+            setTimeout(() => {
+                document.getElementById('eventContent').classList.remove('fade-in');
+            }, 300);
+        }
+        
+        function markdownToHtml(markdown, basePath, eventTitle) {
+            let html = markdown;
+            
+            const lines = html.split('\n');
+            const filteredLines = [];
+            let skipSection = false;
+            let skipSectionLevel = 0;
+            let firstH3Removed = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const trimmedLine = line.trim();
+                
+                if (!firstH3Removed && trimmedLine.match(/^###\s+(.+)$/)) {
+                    const titleMatch = trimmedLine.match(/^###\s+(.+)$/);
+                    if (titleMatch && eventTitle && titleMatch[1].trim() === eventTitle.trim()) {
+                        firstH3Removed = true;
+                        continue;
+                    }
+                }
+                
+                const headerMatch = trimmedLine.match(/^(#{4,5})\s+(摘要|tag)$/i);
+                if (headerMatch) {
+                    skipSection = true;
+                    skipSectionLevel = headerMatch[1].length;
+                    continue;
+                }
+                
+                if (skipSection) {
+                    const newHeaderMatch = trimmedLine.match(/^(#{2,})\s+/);
+                    if (newHeaderMatch) {
+                        const newLevel = newHeaderMatch[1].length;
+                        if (newLevel <= skipSectionLevel) {
+                            skipSection = false;
+                            skipSectionLevel = 0;
+                        } else {
+                            continue;
+                        }
+                    } else if (trimmedLine.match(/^---+$/)) {
+                        skipSection = false;
+                        skipSectionLevel = 0;
+                        continue;
+                    } else {
+                        continue;
+                    }
+                }
+                
+                filteredLines.push(line);
+            }
+            
+            html = filteredLines.join('\n');
+            
+            html = html.replace(/^##### (.*$)/gim, '<p class="font-bold text-base my-2">$1</p>');
+            html = html.replace(/^#### (.*$)/gim, '<p class="font-bold text-lg my-2">$1</p>');
+            html = html.replace(/^### (.*$)/gim, '<p class="font-bold text-xl my-3">$1</p>');
+            html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+            html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+            
+            html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            html = html.replace(/<font color="red">(.*?)<\/font>/g, '<span class="highlight-red">$1</span>');
+            html = html.replace(/<font color="green">(.*?)<\/font>/g, '<span class="highlight-green">$1</span>');
+            html = html.replace(/<font color="blue">(.*?)<\/font>/g, '<span class="highlight-blue">$1</span>');
+            html = html.replace(/<font color="brone">(.*?)<\/font>/g, '<span style="color: #cd7f32;">$1</span>');
+            
+            html = html.replace(/<img[^>]+src="([^"]+)"[^>]*>/gi, (match, src) => {
+                const altMatch = match.match(/alt="([^"]*)"/);
+                const alt = altMatch ? altMatch[1] : '';
+                let fullSrc;
+                if (src.startsWith('http://') || src.startsWith('https://')) {
+                    fullSrc = src;
+                } else if (src.startsWith('/')) {
+                    fullSrc = src;
+                } else {
+                    const cleanBase = basePath.replace(/^\//, '').replace(/\/$/, '');
+                    const cleanSrc = src.replace(/\\/g, '/').replace(/^\//, '');
+                    fullSrc = cleanBase + '/' + cleanSrc;
+                }
+                return `<img src="${fullSrc}" alt="${alt}" class="max-w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition" onclick="openImageModal('${fullSrc}', '${alt}')" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none;" class="text-red-500 text-sm mt-2">图片加载失败: ${fullSrc}</div>`;
+            });
+            
+            html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+                let fullSrc;
+                if (src.startsWith('http://') || src.startsWith('https://')) {
+                    fullSrc = src;
+                } else if (src.startsWith('/')) {
+                    fullSrc = src;
+                } else {
+                    const cleanBase = basePath.replace(/^\//, '').replace(/\/$/, '');
+                    const cleanSrc = src.replace(/\\/g, '/').replace(/^\//, '');
+                    fullSrc = cleanBase + '/' + cleanSrc;
+                }
+                return `<img src="${fullSrc}" alt="${alt}" class="max-w-full rounded-lg shadow-md cursor-pointer hover:opacity-90 transition" onclick="openImageModal('${fullSrc}', '${alt}')" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none;" class="text-red-500 text-sm mt-2">图片加载失败: ${fullSrc}</div>`;
+            });
+            
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, src) => {
+                const isVideo = src.match(/\.(flv|mp4|webm|mov|avi)$/i);
+                if (isVideo) {
+                    let fullSrc;
+                    if (src.startsWith('http://') || src.startsWith('https://')) {
+                        fullSrc = src;
+                    } else if (src.startsWith('/')) {
+                        fullSrc = src;
+                    } else {
+                        const cleanBase = basePath.replace(/^\//, '').replace(/\/$/, '');
+                        const cleanSrc = src.replace(/\\/g, '/').replace(/^\//, '');
+                        fullSrc = cleanBase + '/' + cleanSrc;
+                    }
+                    const ext = isVideo[1].toLowerCase();
+                    if (ext === 'flv') {
+                        return `<div class="my-4 p-4 bg-slate-100 rounded-lg"><p class="text-sm text-slate-600 mb-2">📹 本地视频文件: ${text}</p><a href="${fullSrc}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>点击下载/播放 FLV 视频</a></div>`;
+                    }
+                    return `<div class="my-4"><video controls class="w-full max-w-2xl rounded-lg shadow-md"><source src="${fullSrc}" type="video/${ext === 'mov' ? 'quicktime' : ext}">您的浏览器不支持视频播放。</video><p class="text-sm text-gray-500 mt-1">${text}</p></div>`;
+                }
+                return `<a href="${src}" target="_blank">${text}</a>`;
+            });
+            
+            html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+            
+            html = html.replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>');
+            
+            html = html.replace(/^-{3,}$/gim, '<hr>');
+            html = html.replace(/^\*{3,}$/gim, '<hr>');
+            
+            const listLines = html.split('\n');
+            const result = [];
+            let inUl = false;
+            let inOl = false;
+            
+            for (let i = 0; i < listLines.length; i++) {
+                let line = listLines[i];
+                
+                const ulMatch = line.match(/^\s*-\s+(.+)$/);
+                const olMatch = line.match(/^\s*\d+\.\s+(.+)$/);
+                
+                if (ulMatch) {
+                    if (!inUl) {
+                        if (inOl) {
+                            result.push('</ol>');
+                            inOl = false;
+                        }
+                        result.push('<ul>');
+                        inUl = true;
+                    }
+                    result.push(`<li>${ulMatch[1]}</li>`);
+                } else if (olMatch) {
+                    if (!inOl) {
+                        if (inUl) {
+                            result.push('</ul>');
+                            inUl = false;
+                        }
+                        result.push('<ol>');
+                        inOl = true;
+                    }
+                    result.push(`<li>${olMatch[1]}</li>`);
+                } else {
+                    if (inUl) {
+                        result.push('</ul>');
+                        inUl = false;
+                    }
+                    if (inOl) {
+                        result.push('</ol>');
+                        inOl = false;
+                    }
+                    result.push(line);
+                }
+            }
+            
+            if (inUl) result.push('</ul>');
+            if (inOl) result.push('</ol>');
+            
+            html = result.join('\n');
+            
+            html = html.replace(/(?<!<\/h[1-6]>|<\/p>|<\/li>|<\/ul>|<\/ol>|<\/blockquote>|<\/pre>|<hr|<br>)\n/g, '<br>');
+            
+            return html;
+        }
+        
+        function updateBreadcrumb(event) {
+            const breadcrumb = document.getElementById('breadcrumb');
+            breadcrumb.innerHTML = `
+                <span class="text-gray-400">事件</span>
+                <span class="mx-2 text-gray-300">/</span>
+                <span>${event.year}</span>
+                <span class="mx-2 text-gray-300">/</span>
+                <span class="font-medium text-gray-800">${event.title}</span>
+            `;
+        }
+        
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentIndex <= 0;
+            document.getElementById('nextBtn').disabled = currentIndex >= events.length - 1;
+        }
+        
+        function filterByTag(tag) {
+            currentFilter = tag;
+            
+            document.querySelectorAll('.tag-filter').forEach(btn => {
+                if (btn.dataset.tag === tag) {
+                    btn.classList.add('bg-blue-500', 'text-white');
+                    btn.classList.remove('bg-slate-700');
+                } else {
+                    btn.classList.remove('bg-blue-500', 'text-white');
+                    btn.classList.add('bg-slate-700');
+                }
+            });
+            
+            renderEventList();
+        }
+        
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderEventList();
+            });
+            
+            document.getElementById('tagFilters').addEventListener('click', (e) => {
+                if (e.target.classList.contains('tag-filter')) {
+                    filterByTag(e.target.dataset.tag);
+                }
+            });
+            
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                loadEvent(currentIndex - 1);
+            });
+            
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                loadEvent(currentIndex + 1);
+            });
+            
+            document.getElementById('tigerSongToggle').addEventListener('click', showTigerSongsTable);
+
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            function openMobileMenu() {
+                sidebar.classList.remove('hidden');
+                setTimeout(() => {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                }, 10);
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeMobileMenu() {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                setTimeout(() => {
+                    sidebar.classList.add('hidden');
+                }, 300);
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
+                    openMobileMenu();
+                } else {
+                    closeMobileMenu();
+                }
+            });
+            
+            overlay.addEventListener('click', closeMobileMenu);
+            
+            // Close mobile menu when clicking on an event
+            document.getElementById('eventList').addEventListener('click', (e) => {
+                if (window.innerWidth < 1024) {
+                    closeMobileMenu();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                    loadEvent(currentIndex - 1);
+                } else if (e.key === 'ArrowRight' && currentIndex < events.length - 1) {
+                    loadEvent(currentIndex + 1);
+                }
+            });
+        }
+        
+        const xlsxFiles = [
+            { path: '数据对比/卡勾数据对比/kassa-vs-Zer0.xlsx', name: 'kassa vs Zer0' },
+            { path: '数据对比/卡勾数据对比/kassa-vs-ImperialHal.xlsx', name: 'kassa vs ImperialHal' },
+            { path: '数据对比/卡勾数据对比/kassa-vs-Crazycong.xlsx', name: 'kassa vs Crazycong' },
+            { path: '数据对比/卡勾数据对比/kassa-vs-3mz.xlsx', name: 'kassa vs 3mz' },
+            { path: '数据对比/huge数据对比/3mz-vs-wgmy.xlsx', name: '3mz vs wgmy' },
+            { path: '数据对比/huge数据对比/3mz-vs-kassa.xlsx', name: '3mz vs kassa' },
+            { path: '数据对比/huge数据对比/3mz-vs-jacky.xlsx', name: '3mz vs jacky' },
+            { path: '数据对比/huge数据对比/3mz-vs-Crazycong.xlsx', name: '3mz vs Crazycong' },
+            { path: '数据对比/huge数据对比/3mz-pite-noname.xlsx', name: '3mz pite noname' },
+            { path: '数据对比/cn队数据整理/year6-s1-R1.xlsx', name: 'cn队 year6-s1-R1' },
+            { path: '数据对比/cn指挥数据对比/世界赛.xlsx', name: 'cn指挥 世界赛' }
+        ];
+        
+        let xlsxPanelOpen = false;
+        
+        function toggleXlsxPanel() {
+            xlsxPanelOpen = !xlsxPanelOpen;
+            const panel = document.getElementById('xlsxPanel');
+            const btn = document.getElementById('xlsxToggleBtn');
+            
+            if (xlsxPanelOpen) {
+                panel.classList.remove('translate-x-full');
+                btn.classList.add('hidden');
+                renderXlsxFileList();
+            } else {
+                closeXlsxPanel();
+            }
+        }
+        
+        function closeXlsxPanel() {
+            xlsxPanelOpen = false;
+            const panel = document.getElementById('xlsxPanel');
+            const btn = document.getElementById('xlsxToggleBtn');
+            
+            panel.classList.add('translate-x-full');
+            btn.classList.remove('hidden');            btn.style.transform = '';
+        }
+        
+        function closeXlsxMainContent(returnToHome = true) {
+            const xlsxContent = document.getElementById('xlsxMainContent');
+            const eventContentCard = document.getElementById('eventContentCard');
+            
+            if (xlsxContent.parentElement === document.getElementById('eventContent')) {
+                eventContentCard.appendChild(xlsxContent);
+            }
+            
+            xlsxContent.classList.add('hidden');
+            document.getElementById('eventBody').classList.remove('hidden');
+            document.getElementById('backToHomeBtn').classList.remove('hidden');
+            
+            document.getElementById('prevBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+            
+            const toggleBtn = document.getElementById('xlsxToggleBtn');
+            toggleBtn.classList.remove('hidden');
+            toggleBtn.style.transform = '';
+            
+            eventContentCard.classList.remove('hidden');
+            
+            if (returnToHome) {
+                showWelcomeScreen();
+            }
+        }
+        
+        function openImageModal(src, alt) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            const caption = document.getElementById('modalCaption');
+            
+            img.src = src;
+            img.alt = alt;
+            caption.textContent = alt || '';
+            modal.classList.remove('hidden');
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            
+            document.body.style.overflow = '';
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+        
+        function renderXlsxFileList() {
+            const container = document.getElementById('xlsxFileList');
+            container.innerHTML = '<p class="text-sm text-gray-500 mb-3">点击文件查看数据对比</p>';
+            
+            xlsxFiles.forEach((file, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left px-3 py-2 bg-gray-50 hover:bg-purple-50 border border-gray-200 hover:border-purple-300 rounded-lg transition text-sm flex items-center gap-2';
+                btn.innerHTML = `
+                    <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                    </svg>
+                    ${file.name}
+                `;
+                btn.onclick = () => loadXlsxFile(file, index);
+                container.appendChild(btn);
+            });
+        }
+        
+        async function loadXlsxFile(file, index) {
+            const panel = document.getElementById('xlsxPanel');
+            const btn = document.getElementById('xlsxToggleBtn');
+            panel.classList.add('translate-x-full');
+            xlsxPanelOpen = false;
+            setTimeout(() => {
+                btn.classList.remove('hidden');
+                btn.style.transform = '';
+            }, 300);
+            
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('eventContent').classList.remove('hidden');
+            
+            document.getElementById('eventBody').classList.add('hidden');
+            document.getElementById('backToHomeBtn').classList.add('hidden');
+            document.getElementById('xlsxMainContent').classList.remove('hidden');
+            
+            document.getElementById('prevBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            
+            currentIndex = -1;
+            renderEventList();
+            
+            document.getElementById('eventContentCard').classList.add('hidden');
+            const xlsxContent = document.getElementById('xlsxMainContent');
+            const eventContent = document.getElementById('eventContent');
+            if (xlsxContent.parentElement !== eventContent) {
+                eventContent.appendChild(xlsxContent);
+            }
+            
+            const titleEl = document.getElementById('xlsxMainTitle');
+            const tableContainer = document.getElementById('xlsxMainTableContainer');
+            
+            titleEl.textContent = file.name;
+            tableContainer.innerHTML = '<div class="text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div><p class="text-sm text-gray-500 mt-2">加载中...</p></div>';
+            
+            document.getElementById('breadcrumb').innerHTML = `
+                <span class="text-gray-400">数据对比</span>
+                <span class="mx-2 text-gray-300">/</span>
+                <span class="font-medium text-gray-800">${file.name}</span>
+            `;
+            
+            try {
+                const response = await fetch(file.path);
+                const arrayBuffer = await response.arrayBuffer();
+                const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+                
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                const html = XLSX.utils.sheet_to_html(worksheet, { editable: false });
+                
+                const styledHtml = html.replace('<table', '<table class="text-xs border-collapse"')
+                    .replace(/<td/g, '<td class="border border-gray-300 px-2 py-1 text-center"')
+                    .replace(/<th/g, '<th class="border border-gray-300 px-2 py-1 bg-purple-50 font-semibold text-center"');
+                
+                tableContainer.innerHTML = styledHtml;
+            } catch (error) {
+                tableContainer.innerHTML = `<p class="text-red-500 text-sm">加载失败: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

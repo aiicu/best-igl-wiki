@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
         
         body {
             font-family: 'Noto Sans SC', sans-serif;
@@ -214,6 +214,55 @@
             width: 2px;
             background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
         }
+
+        #contentShell {
+            width: 100%;
+            max-width: 56rem;
+            transition: max-width 0.2s ease;
+        }
+
+        #contentShell.table-view {
+            max-width: 96rem;
+        }
+
+        #xlsxMainContent {
+            min-width: 0;
+        }
+
+        #xlsxMainTableContainer {
+            width: 100%;
+            max-width: 100%;
+            scrollbar-gutter: stable;
+        }
+
+        #xlsxMainTableContainer table {
+            width: max-content !important;
+            min-width: 100%;
+            max-width: none;
+        }
+
+        #xlsxMainTableContainer table.tiger-song-table {
+            width: 100% !important;
+            min-width: 60rem;
+        }
+
+        .tiger-song-cover {
+            width: 7rem;
+            aspect-ratio: 16 / 9;
+        }
+
+        .tiger-song-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (min-width: 1024px) {
+            #contentShell.table-view #xlsxMainContent {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
         
         @media (max-width: 1023px) {
             .markdown-body {
@@ -245,6 +294,10 @@
             .markdown-body {
                 font-size: 0.9rem;
             }
+
+            .tiger-song-cover {
+                width: 6rem;
+            }
             
             #prevBtn, #nextBtn {
                 padding: 0.375rem 0.75rem;
@@ -260,144 +313,1151 @@
                 padding: 0.2rem 0.4rem;
             }
         }
+
+        :root {
+            --canvas: #f5f7f8;
+            --surface: #ffffff;
+            --surface-soft: #f7f9fa;
+            --surface-strong: #eef2f3;
+            --ink: #17191c;
+            --body: #3f454c;
+            --muted: #737b84;
+            --hairline: #dde2e5;
+            --hairline-soft: #e9edef;
+            --accent: #008c72;
+            --accent-soft: #e4f5f0;
+            --accent-strong: #006c59;
+            --gold: #b7791f;
+            --gold-soft: #fff4d6;
+            --link: #246bce;
+            --danger: #b94343;
+            --sidebar-width: 18rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            letter-spacing: 0 !important;
+        }
+
+        html,
+        body {
+            background: var(--canvas);
+            color: var(--ink);
+        }
+
+        body {
+            font-family: Inter, 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        button,
+        input,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .app-sidebar {
+            width: var(--sidebar-width);
+            background: #f8faf9 !important;
+            color: var(--ink) !important;
+            border-right: 1px solid var(--hairline);
+            box-shadow: none !important;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.25rem 1rem;
+            border-bottom: 1px solid var(--hairline-soft);
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 2.25rem;
+            height: 2.25rem;
+            flex: 0 0 2.25rem;
+            place-items: center;
+            font-size: 1.65rem;
+            line-height: 1;
+        }
+
+        .brand-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .brand-subtitle {
+            margin-top: 0.15rem;
+            color: var(--muted);
+            font-size: 0.72rem;
+            line-height: 1.35;
+        }
+
+        .sidebar-search {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid var(--hairline-soft);
+        }
+
+        #searchInput {
+            height: 2.5rem;
+            border: 1px solid var(--hairline) !important;
+            border-radius: 6px !important;
+            background: var(--surface) !important;
+            color: var(--ink) !important;
+            font-size: 0.82rem;
+            box-shadow: none !important;
+        }
+
+        #searchInput::placeholder {
+            color: #9aa1a8 !important;
+        }
+
+        #searchInput:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(0, 140, 114, 0.1) !important;
+        }
+
+        .sidebar-filter {
+            padding: 0.75rem 1rem 0.875rem;
+            border-bottom: 1px solid var(--hairline-soft);
+        }
+
+        .sidebar-label {
+            margin-bottom: 0.55rem;
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        #tagFilters {
+            gap: 0.35rem !important;
+        }
+
+        .tag-filter {
+            min-height: 1.75rem;
+            border: 1px solid transparent !important;
+            border-radius: 999px !important;
+            background: var(--surface-strong) !important;
+            color: #596169 !important;
+            padding: 0.25rem 0.55rem !important;
+            font-size: 0.68rem !important;
+            font-weight: 500;
+            transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .tag-filter:hover {
+            border-color: #c8d1d4 !important;
+            background: #fff !important;
+            color: var(--ink) !important;
+        }
+
+        .tag-filter.active {
+            border-color: #b9dfd5 !important;
+            background: var(--accent-soft) !important;
+            color: var(--accent-strong) !important;
+            font-weight: 600;
+        }
+
+        #eventList {
+            padding: 0.75rem 0.75rem 1.25rem !important;
+        }
+
+        .year-section {
+            margin-bottom: 1.1rem;
+        }
+
+        .year-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 0.45rem 0.4rem;
+            color: #8a9299;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        .year-count {
+            color: #a4abb1;
+            font-weight: 500;
+        }
+
+        .event-card {
+            position: relative;
+            display: block;
+            width: 100%;
+            margin: 0 0 0.2rem;
+            border: 0;
+            border-radius: 6px !important;
+            background: transparent !important;
+            color: var(--body) !important;
+            padding: 0.58rem 0.65rem 0.58rem 1.1rem !important;
+            text-align: left;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .event-card::before {
+            position: absolute;
+            top: 0.65rem;
+            bottom: 0.65rem;
+            left: 0.35rem;
+            width: 2px;
+            border-radius: 2px;
+            background: transparent;
+            content: '';
+        }
+
+        .event-card:hover {
+            transform: none !important;
+            background: #eef2f1 !important;
+            color: var(--ink) !important;
+        }
+
+        .event-card.active {
+            background: var(--accent-soft) !important;
+            color: var(--accent-strong) !important;
+        }
+
+        .event-card.active::before {
+            background: var(--accent);
+        }
+
+        .event-card-title {
+            overflow: hidden;
+            font-size: 0.78rem;
+            font-weight: 500;
+            line-height: 1.45;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .event-date {
+            margin-top: 0.18rem !important;
+            color: #90979e !important;
+            font-size: 0.65rem !important;
+        }
+
+        .event-card.active .event-date {
+            color: #4d8377 !important;
+        }
+
+        .sidebar-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.8rem 1rem;
+            border-top: 1px solid var(--hairline-soft);
+            color: var(--muted);
+            font-size: 0.68rem;
+        }
+
+        .sidebar-footer a {
+            color: inherit;
+        }
+
+        .sidebar-footer a:hover {
+            color: var(--accent-strong);
+        }
+
+        .sidebar::-webkit-scrollbar,
+        .content-area::-webkit-scrollbar,
+        #xlsxMainTableContainer::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track,
+        .content-area::-webkit-scrollbar-track,
+        #xlsxMainTableContainer::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb,
+        .content-area::-webkit-scrollbar-thumb,
+        #xlsxMainTableContainer::-webkit-scrollbar-thumb {
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background: #c8ced2;
+            background-clip: padding-box;
+        }
+
+        .app-header {
+            min-height: 3.75rem;
+            border-bottom: 1px solid var(--hairline) !important;
+            background: rgba(255, 255, 255, 0.96) !important;
+            padding: 0.65rem 1.25rem !important;
+        }
+
+        #breadcrumb {
+            min-width: 0;
+            overflow: hidden;
+            color: var(--muted) !important;
+            font-size: 0.76rem !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #breadcrumb .font-medium,
+        #breadcrumb .text-gray-800 {
+            color: var(--ink) !important;
+        }
+
+        .header-icon-button {
+            display: inline-grid;
+            width: 2.25rem;
+            height: 2.25rem;
+            place-items: center;
+            border: 1px solid var(--hairline);
+            border-radius: 6px;
+            background: var(--surface);
+            color: #555d65;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .header-icon-button:hover {
+            border-color: #bdc6ca;
+            background: var(--surface-soft);
+            color: var(--ink);
+        }
+
+        .header-icon-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.35;
+        }
+
+        #contentArea {
+            background: var(--canvas) !important;
+        }
+
+        #contentShell {
+            max-width: 64rem;
+            padding: 1.5rem !important;
+            transition: max-width 0.2s ease;
+        }
+
+        #contentShell.table-view {
+            max-width: 96rem;
+        }
+
+        .archive-home {
+            padding: 0 !important;
+            text-align: left !important;
+        }
+
+        .archive-hero {
+            position: relative;
+            min-height: 24rem;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #15191a;
+            color: #fff;
+        }
+
+        .archive-hero-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 38%;
+            filter: saturate(0.82) contrast(1.04);
+        }
+
+        .archive-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(9, 13, 14, 0.62);
+        }
+
+        .archive-hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            min-height: 24rem;
+            max-width: 44rem;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2.5rem;
+        }
+
+        .archive-kicker {
+            display: inline-flex;
+            width: fit-content;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.9rem;
+            color: #9ce4d2;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .archive-kicker::before {
+            width: 1.5rem;
+            height: 2px;
+            background: #32c6a4;
+            content: '';
+        }
+
+        .archive-hero h1 {
+            max-width: 38rem;
+            margin: 0;
+            color: #fff;
+            font-size: 2.85rem;
+            font-weight: 700;
+            line-height: 1.08;
+        }
+
+        .archive-hero-copy {
+            max-width: 34rem;
+            margin: 1rem 0 0;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.98rem;
+            line-height: 1.75;
+        }
+
+        .archive-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            margin-top: 1.5rem;
+        }
+
+        .primary-action,
+        .secondary-action {
+            display: inline-flex;
+            min-height: 2.65rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-radius: 6px;
+            padding: 0.65rem 0.95rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .primary-action {
+            border: 1px solid #1ca486;
+            background: #10a184;
+            color: #fff;
+        }
+
+        .primary-action:hover {
+            border-color: #07826b;
+            background: #078b72;
+        }
+
+        .secondary-action {
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .secondary-action:hover {
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .archive-section {
+            padding: 2rem 0 0;
+        }
+
+        .archive-section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .archive-section-title {
+            margin: 0;
+            color: var(--ink);
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .archive-section-meta {
+            color: var(--muted);
+            font-size: 0.7rem;
+        }
+
+        .home-event-list {
+            display: grid;
+        }
+
+        .home-event-item {
+            display: grid;
+            grid-template-columns: 6.5rem minmax(0, 1fr) 2rem;
+            gap: 1rem;
+            align-items: center;
+            width: 100%;
+            border: 0;
+            border-bottom: 1px solid var(--hairline-soft);
+            background: transparent;
+            padding: 1rem 0;
+            color: var(--ink);
+            text-align: left;
+            transition: background-color 0.15s ease;
+        }
+
+        .home-event-item:hover {
+            background: rgba(255, 255, 255, 0.65);
+        }
+
+        .home-event-date {
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .home-event-title {
+            margin: 0;
+            font-size: 0.91rem;
+            font-weight: 650;
+            line-height: 1.45;
+        }
+
+        .home-event-abstract {
+            display: -webkit-box;
+            overflow: hidden;
+            margin-top: 0.25rem;
+            color: var(--muted);
+            font-size: 0.75rem;
+            line-height: 1.55;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+
+        .home-event-arrow {
+            color: #99a1a8;
+        }
+
+        #eventContentCard {
+            overflow: visible !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .event-hero {
+            border-bottom: 1px solid var(--hairline);
+            background: transparent !important;
+            color: var(--ink) !important;
+            padding: 1.5rem 0 1.35rem !important;
+        }
+
+        .event-meta {
+            margin-bottom: 0.65rem !important;
+            color: var(--accent-strong) !important;
+            font-size: 0.72rem !important;
+            font-weight: 650;
+            font-variant-numeric: tabular-nums;
+        }
+
+        #eventTitle {
+            max-width: 46rem;
+            color: var(--ink) !important;
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            line-height: 1.25;
+        }
+
+        #eventAbstract {
+            max-width: 46rem;
+            margin-top: 0.75rem !important;
+            color: var(--muted) !important;
+            font-size: 0.88rem !important;
+            line-height: 1.75 !important;
+        }
+
+        #eventTags {
+            gap: 0.4rem !important;
+        }
+
+        .event-tag,
+        #eventTags > span {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid transparent;
+            border-radius: 999px !important;
+            padding: 0.26rem 0.55rem !important;
+            font-size: 0.67rem !important;
+            font-weight: 600;
+        }
+
+        #eventPdf {
+            border: 1px solid #e3b6b6 !important;
+            border-radius: 6px !important;
+            background: #fff6f6 !important;
+            color: var(--danger) !important;
+            box-shadow: none !important;
+        }
+
+        #eventPdf:hover {
+            border-color: #d48787 !important;
+            background: #fff !important;
+        }
+
+        #eventBody {
+            padding: 1.75rem 0 2.5rem !important;
+        }
+
+        .markdown-body {
+            max-width: none;
+            color: var(--body) !important;
+            font-family: Inter, 'Noto Sans SC', system-ui, sans-serif !important;
+            font-size: 1rem;
+            line-height: 1.82;
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4 {
+            color: var(--ink) !important;
+            font-weight: 700;
+        }
+
+        .markdown-body h1 {
+            margin: 2.5rem 0 1rem;
+            border-bottom: 1px solid var(--hairline) !important;
+            padding-bottom: 0.65rem;
+            font-size: 1.75rem;
+        }
+
+        .markdown-body h2 {
+            margin: 2.4rem 0 0.9rem !important;
+            border-bottom: 0 !important;
+            padding-bottom: 0 !important;
+            font-size: 1.35rem !important;
+        }
+
+        .markdown-body h2::before {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            margin-right: 0.55rem;
+            border-radius: 2px;
+            background: var(--accent);
+            vertical-align: -0.08em;
+            content: '';
+        }
+
+        .markdown-body h3 {
+            margin: 1.8rem 0 0.7rem !important;
+            font-size: 1.1rem !important;
+        }
+
+        .markdown-body p {
+            margin: 0.75rem 0;
+            line-height: 1.82;
+        }
+
+        .markdown-body a {
+            color: var(--link) !important;
+            text-underline-offset: 3px;
+        }
+
+        .markdown-body blockquote {
+            margin: 1.25rem 0;
+            border-left: 3px solid var(--gold) !important;
+            border-radius: 0 6px 6px 0 !important;
+            background: #fffaf0 !important;
+            color: #5d5140 !important;
+            padding: 0.9rem 1rem !important;
+        }
+
+        .markdown-body code {
+            border: 1px solid var(--hairline-soft);
+            border-radius: 4px !important;
+            background: #f2f4f5 !important;
+            color: #30363b;
+            font-size: 0.88em;
+        }
+
+        .markdown-body pre {
+            border: 1px solid #282d30;
+            border-radius: 6px !important;
+            background: #191d1f !important;
+            box-shadow: none;
+        }
+
+        .markdown-body img {
+            border: 1px solid var(--hairline);
+            border-radius: 6px !important;
+            background: #fff;
+            box-shadow: none !important;
+        }
+
+        .markdown-body img:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .markdown-body hr {
+            margin: 2rem 0 !important;
+            border-top: 1px solid var(--hairline) !important;
+        }
+
+        #backToHomeBtn {
+            border-top: 1px solid var(--hairline-soft);
+            padding: 1rem 0 0 !important;
+        }
+
+        .quiet-button {
+            display: inline-flex;
+            min-height: 2.3rem;
+            align-items: center;
+            gap: 0.45rem;
+            border: 1px solid var(--hairline);
+            border-radius: 6px;
+            background: var(--surface);
+            color: #596169;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.74rem;
+            font-weight: 550;
+            transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .quiet-button:hover {
+            border-color: #bfc8cc;
+            background: var(--surface-soft);
+            color: var(--ink);
+        }
+
+        #xlsxMainContent {
+            min-width: 0;
+            border: 1px solid var(--hairline);
+            border-radius: 8px;
+            background: var(--surface);
+            padding: 1rem !important;
+        }
+
+        .table-toolbar {
+            margin-bottom: 0.9rem !important;
+            border-bottom: 1px solid var(--hairline) !important;
+            padding-bottom: 0.9rem !important;
+        }
+
+        #xlsxMainTitle {
+            color: var(--ink) !important;
+            font-size: 1.05rem !important;
+            font-weight: 700 !important;
+        }
+
+        #xlsxMainTableContainer {
+            overflow: auto;
+            border: 1px solid var(--hairline);
+            border-radius: 6px;
+            background: var(--surface);
+        }
+
+        #xlsxMainTableContainer table {
+            border: 0 !important;
+            border-collapse: separate !important;
+            border-spacing: 0;
+            color: var(--body);
+            font-variant-numeric: tabular-nums;
+        }
+
+        #xlsxMainTableContainer th,
+        #xlsxMainTableContainer td {
+            border: 0 !important;
+            border-right: 1px solid var(--hairline-soft) !important;
+            border-bottom: 1px solid var(--hairline-soft) !important;
+            padding: 0.65rem 0.75rem !important;
+            line-height: 1.4;
+        }
+
+        #xlsxMainTableContainer th:last-child,
+        #xlsxMainTableContainer td:last-child {
+            border-right: 0 !important;
+        }
+
+        #xlsxMainTableContainer tbody tr:last-child td {
+            border-bottom: 0 !important;
+        }
+
+        #xlsxMainTableContainer thead th {
+            position: sticky;
+            z-index: 2;
+            top: 0;
+            background: #f1f4f4 !important;
+            color: #4e565d !important;
+            font-size: 0.7rem;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+        }
+
+        #xlsxMainTableContainer tbody tr:nth-child(even) td {
+            background: #fbfcfc;
+        }
+
+        #xlsxMainTableContainer tbody tr:hover td {
+            background: #edf8f5 !important;
+        }
+
+        #xlsxMainTableContainer a {
+            color: var(--link) !important;
+        }
+
+        .score-source-panel {
+            margin: 0 0 0.9rem;
+            border: 0;
+            border-bottom: 1px solid var(--hairline);
+            background: transparent;
+            padding: 0 0 0.9rem;
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border: 1px solid var(--hairline);
+            border-radius: 6px;
+            background: var(--surface);
+            color: #545d64;
+            padding: 0.42rem 0.6rem;
+            font-size: 0.68rem;
+            font-weight: 600;
+        }
+
+        .source-link:hover {
+            border-color: #afd8ce;
+            color: var(--accent-strong);
+        }
+
+        .tiger-song-cover {
+            width: 7.5rem;
+            border-radius: 4px !important;
+            box-shadow: none !important;
+        }
+
+        .tiger-song-cover img {
+            margin: 0;
+            border: 0;
+            border-radius: 4px !important;
+            box-shadow: none !important;
+        }
+
+        #xlsxPanel {
+            width: min(23rem, 92vw) !important;
+            border-left: 1px solid var(--hairline) !important;
+            background: var(--surface) !important;
+            box-shadow: -12px 0 32px rgba(25, 36, 37, 0.08) !important;
+        }
+
+        .data-panel-header {
+            min-height: 3.75rem;
+            border-bottom: 1px solid var(--hairline);
+            background: var(--surface) !important;
+            color: var(--ink) !important;
+            padding: 0.9rem 1rem !important;
+        }
+
+        .data-panel-icon {
+            color: var(--accent);
+        }
+
+        .data-file-button {
+            display: flex;
+            width: 100%;
+            min-height: 2.75rem;
+            align-items: center;
+            gap: 0.65rem;
+            border: 1px solid var(--hairline);
+            border-radius: 6px;
+            background: var(--surface);
+            color: var(--body);
+            padding: 0.65rem 0.75rem;
+            text-align: left;
+            transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .data-file-button:hover {
+            border-color: #acd5cb;
+            background: #f4faf8;
+            color: var(--accent-strong);
+        }
+
+        #xlsxToggleBtn {
+            top: auto !important;
+            right: 1.25rem !important;
+            bottom: 1.25rem !important;
+            display: grid;
+            width: 2.75rem;
+            height: 2.75rem;
+            place-items: center;
+            border: 1px solid #006f5c;
+            border-radius: 8px !important;
+            background: var(--accent) !important;
+            color: #fff;
+            padding: 0 !important;
+            box-shadow: 0 8px 22px rgba(0, 108, 89, 0.2) !important;
+            transform: none !important;
+        }
+
+        #xlsxToggleBtn:hover {
+            right: 1.25rem !important;
+            background: var(--accent-strong) !important;
+        }
+
+        #imageModal {
+            background: rgba(10, 13, 14, 0.94) !important;
+        }
+
+        #modalImage {
+            border-radius: 6px !important;
+        }
+
+        #mobileOverlay {
+            background: rgba(18, 22, 23, 0.42) !important;
+            backdrop-filter: blur(2px);
+        }
+
+        @media (min-width: 1024px) {
+            #contentShell.table-view #xlsxMainContent {
+                padding: 1rem !important;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .app-sidebar {
+                width: min(20rem, 88vw) !important;
+                box-shadow: 18px 0 40px rgba(19, 29, 30, 0.12) !important;
+            }
+
+            #contentShell {
+                padding: 1rem !important;
+            }
+
+            #xlsxMainTableContainer {
+                max-width: 100% !important;
+                margin-right: 0 !important;
+                margin-left: 0 !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app-header {
+                min-height: 3.5rem;
+                padding: 0.55rem 0.75rem !important;
+            }
+
+            .header-icon-button {
+                width: 2.15rem;
+                height: 2.15rem;
+            }
+
+            #contentShell {
+                padding: 0.75rem !important;
+            }
+
+            .archive-hero,
+            .archive-hero-content {
+                min-height: 25rem;
+            }
+
+            .archive-hero-content {
+                padding: 1.4rem;
+            }
+
+            .archive-hero h1 {
+                font-size: 2.05rem;
+            }
+
+            .archive-hero-copy {
+                font-size: 0.86rem;
+            }
+
+            .archive-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .primary-action,
+            .secondary-action {
+                width: 100%;
+            }
+
+            .home-event-item {
+                grid-template-columns: 1fr 1.5rem;
+                gap: 0.5rem;
+            }
+
+            .home-event-date {
+                grid-column: 1 / -1;
+                margin-bottom: -0.2rem;
+            }
+
+            .home-event-arrow {
+                grid-column: 2;
+                grid-row: 2;
+            }
+
+            #eventTitle {
+                font-size: 1.55rem !important;
+            }
+
+            .event-hero {
+                padding: 1.15rem 0 1rem !important;
+            }
+
+            #eventBody {
+                padding-top: 1.25rem !important;
+            }
+
+            .markdown-body {
+                font-size: 0.94rem;
+            }
+
+            #xlsxMainContent {
+                padding: 0.75rem !important;
+            }
+
+            .table-toolbar {
+                align-items: flex-start !important;
+                gap: 0.75rem;
+            }
+
+            #xlsxMainTitle {
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }
+
+            .tiger-song-cover {
+                width: 6rem;
+            }
+
+            #xlsxToggleBtn {
+                right: 0.75rem !important;
+                bottom: 0.75rem !important;
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-50">
+<body>
     <div class="flex h-screen overflow-hidden">
-        <aside class="w-80 bg-slate-900 text-white flex flex-col flex-shrink-0 hidden lg:flex transform -translate-x-full lg:transform-none fixed lg:static inset-y-0 left-0 z-50 transition-transform duration-300" id="sidebar">
-            <div class="p-6 border-b border-slate-700">
-                <h1 class="text-xl font-bold flex items-center gap-2">
-                    <span class="text-2xl">🏆</span>
-                    <span>Best IGL Wiki</span>
-                </h1>
-                <p class="text-slate-400 text-sm mt-1">CNAPEX 唯一 Best IGL</p>
-            </div>
+        <aside class="app-sidebar flex flex-col flex-shrink-0 hidden lg:flex transform -translate-x-full lg:transform-none fixed lg:static inset-y-0 left-0 z-50 transition-transform duration-300" id="sidebar">
+            <button type="button" class="sidebar-brand text-left" onclick="showWelcomeScreen()" aria-label="返回 Best IGL Wiki 首页">
+                <span class="brand-mark" aria-hidden="true">🏆</span>
+                <span>
+                    <span class="brand-title block">Best IGL Wiki</span>
+                    <span class="brand-subtitle block">CNAPEX 事件与资料档案</span>
+                </span>
+            </button>
             
-            <div class="p-4 border-b border-slate-700">
+            <div class="sidebar-search">
                 <div class="relative">
                     <input 
                         type="text" 
                         id="searchInput"
                         placeholder="搜索事件..." 
-                        class="w-full bg-slate-800 text-white px-4 py-2 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-500"
+                        class="w-full px-4 py-2 pl-10 focus:outline-none"
                     >
-                    <svg class="absolute left-3 top-2.5 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
             </div>
             
-            <div class="px-4 py-3 border-b border-slate-700">
-                <p class="text-xs text-slate-400 mb-2 uppercase tracking-wider">标签筛选</p>
+            <div class="sidebar-filter">
+                <p class="sidebar-label">标签筛选</p>
                 <div class="flex flex-wrap gap-2" id="tagFilters">
-                    <button class="tag-filter px-2 py-1 text-xs rounded-full bg-slate-700 hover:bg-slate-600 transition" data-tag="all">全部</button>
+                    <button class="tag-filter active" data-tag="all">全部</button>
                 </div>
             </div>
             
             <div class="flex-1 overflow-y-auto sidebar p-4" id="eventList">
             </div>
             
-            <div class="p-4 border-t border-slate-700 text-xs text-slate-500">
-                <a href="https://tieba.baidu.com/p/10527778972" target="_blank" class="flex items-center gap-1 hover:text-blue-400 transition">
-                    <span>📌 贴吧地址</span>
-                </a>
+            <div class="sidebar-footer">
+                <a href="https://github.com/aiicu/best-igl-wiki" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://tieba.baidu.com/p/10527778972" target="_blank" rel="noopener noreferrer">贴吧存档</a>
             </div>
         </aside>
         
         <main class="flex-1 flex flex-col overflow-hidden">
-            <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center gap-4">
-                    <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <header class="app-header flex items-center justify-between flex-shrink-0">
+                <div class="flex min-w-0 items-center gap-3">
+                    <button id="mobileMenuBtn" class="header-icon-button lg:hidden" title="打开档案导航" aria-label="打开档案导航">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
                     <div id="breadcrumb" class="text-sm text-gray-600">
-                        <span class="text-gray-400">选择一个事件开始浏览</span>
+                        <span class="text-gray-400">档案首页</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button id="prevBtn" class="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        ← 上一个
+                <div class="flex items-center gap-2">
+                    <button id="prevBtn" class="header-icon-button" title="上一个事件" aria-label="上一个事件">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 18l-6-6 6-6"/>
+                        </svg>
                     </button>
-                    <button id="nextBtn" class="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
-                        下一个 →
+                    <button id="nextBtn" class="header-icon-button" title="下一个事件" aria-label="下一个事件">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 18l6-6-6-6"/>
+                        </svg>
                     </button>
                 </div>
             </header>
             
-            <div class="flex-1 overflow-y-auto content-area bg-slate-50" id="contentArea">
-                <div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-                    <div id="welcomeScreen" class="text-center py-12 sm:py-20">
-                        <div class="text-4xl sm:text-6xl mb-4 sm:mb-6">📚</div>
-                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">欢迎来到 Best IGL Wiki</h2>
-                        <p class="text-gray-600 mb-6 sm:mb-8 max-w-lg mx-auto px-4">
-                            专属于 CNAPEX 唯一 Best IGL —— 3mz 的 wiki
-                        </p>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto px-4">
-                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
-                                <div class="text-2xl sm:text-3xl mb-2">🎯</div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">事件记录</h3>
-                                <p class="text-xs sm:text-sm text-gray-500 mt-1">按时间线整理的所有事件</p>
+            <div class="flex-1 overflow-y-auto content-area" id="contentArea">
+                <div id="contentShell" class="mx-auto p-4 sm:p-6 lg:p-8">
+                    <div id="welcomeScreen" class="archive-home">
+                        <section class="archive-hero">
+                            <img class="archive-hero-image" src="images/DreamFire_3Mz_at_the_ALGS_Birmingham_Championship.jpg" alt="3mz 在 ALGS 伯明翰冠军赛现场" width="675" height="450">
+                            <div class="archive-hero-overlay"></div>
+                            <div class="archive-hero-content">
+                                <span class="archive-kicker">CNAPEX Archive</span>
+                                <h1>Best IGL Wiki</h1>
+                                <p class="archive-hero-copy">专属于CN Apex唯一Best IGL 3mz的Wiki</p>
+                                <div class="archive-actions">
+                                    <button type="button" class="primary-action" onclick="loadEvent(events.length - 1)">
+                                        <span>打开最新记录</span>
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-6-6 6 6-6 6"/>
+                                        </svg>
+                                    </button>
+                                    <button id="tigerSongToggle" type="button" class="secondary-action">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Zm12-2c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Z"/>
+                                        </svg>
+                                        <span>虎歌评分</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
-                                <div class="text-2xl sm:text-3xl mb-2">🏷️</div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">标签分类</h3>
-                                <p class="text-xs sm:text-sm text-gray-500 mt-1">高情商、爱同事、爱队友等</p>
+                        </section>
+
+                        <section class="archive-section">
+                            <div class="archive-section-header">
+                                <h3 class="archive-section-title">近期记录</h3>
+                                <span class="archive-section-meta">按事件日期排序</span>
                             </div>
-                            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
-                                <div class="text-2xl sm:text-3xl mb-2">📖</div>
-                                <h3 class="font-semibold text-gray-800 text-sm sm:text-base">完整记录</h3>
-                                <p class="text-xs sm:text-sm text-gray-500 mt-1">详细的事件经过和参考文献</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-8 sm:mt-12 px-4">
-                            <p class="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">快速导航</p>
-                            <div class="flex flex-wrap justify-center gap-2">
-                                <button onclick="loadEventByTitle('qq队友换成你你也能拿冠军')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
-                                    qq队友换成你你也能拿冠军
-                                </button>
-                                <button onclick="loadEventByTitle('单排手柄上大师')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
-                                    单排手柄上大师
-                                </button>
-                                <button onclick="loadEventByTitle('札幌事变')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
-                                    札幌事变
-                                </button>
-                                <button onclick="loadEventByTitle('SAF买TSM赢')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
-                                    SAF买TSM赢
-                                </button>
-                                <button onclick="loadEventByTitle('诅咒级')" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-xs sm:text-sm">
-                                    诅咒级
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-12 flex flex-col items-center">
-                            <a href="https://github.com/aiicu/best-igl-wiki" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800 sm:text-sm">
-                                <svg class="h-4 w-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
-                                </svg>
-                                <span>best igl wiki</span>
-                            </a>
-                            <div id="tigerSongMenu" class="relative mt-3 flex w-full max-w-3xl justify-center">
-                                <button id="tigerSongToggle" type="button" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-blue-500 hover:text-blue-600">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Zm12-2c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2Z"/>
-                                    </svg>
-                                    <span>虎歌</span>
-                                </button>
-                            </div>
-                        </div>
+                            <div id="homeRecentEvents" class="home-event-list"></div>
+                        </section>
                     </div>
                     
                     <div id="eventContent" class="hidden">
-                        <div id="eventContentCard" class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                            <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-4 sm:p-6">
+                        <div id="eventContentCard">
+                            <div class="event-hero">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                                     <div class="flex-1 min-w-0">
-                                        <div class="flex items-center gap-2 text-blue-300 text-xs sm:text-sm mb-1 sm:mb-2">
+                                        <div class="event-meta flex items-center gap-2 mb-1 sm:mb-2">
                                             <span id="eventDate"></span>
                                             <span>·</span>
                                             <span id="eventYear"></span>
@@ -407,7 +1467,7 @@
                                     </div>
                                     <div class="flex flex-col items-start sm:items-end gap-2">
                                         <div id="eventTags" class="flex flex-wrap gap-1.5 sm:gap-2 sm:justify-end max-w-full sm:max-w-xs"></div>
-                                        <a id="eventPdf" class="hidden mt-1 sm:mt-2 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm rounded-lg transition flex items-center gap-1.5 sm:gap-2" target="_blank">
+                                        <a id="eventPdf" class="hidden mt-1 sm:mt-2 px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm transition flex items-center gap-1.5 sm:gap-2" target="_blank">
                                             <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
                                             PDF
                                         </a>
@@ -418,20 +1478,20 @@
                             <div class="p-4 sm:p-6 lg:p-8 markdown-body" id="eventBody"></div>
                             
                             <div id="xlsxMainContent" class="hidden p-4 sm:p-6 lg:p-8">
-                                <div class="flex items-center justify-between mb-4 pb-4">
+                                <div class="table-toolbar flex items-center justify-between mb-4 pb-4">
                                     <h2 id="xlsxMainTitle" class="text-lg sm:text-xl font-bold text-gray-800"></h2>
-                                    <button onclick="closeXlsxMainContent()" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg text-xs sm:text-sm flex items-center gap-2 transition shadow-sm">
+                                    <button onclick="closeXlsxMainContent()" class="quiet-button" title="关闭表格">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                         </svg>
-                                        关闭表格
+                                        <span>关闭</span>
                                     </button>
                                 </div>
                                 <div id="xlsxMainTableContainer" class="overflow-x-auto -mx-4 sm:mx-0" style="max-width: 100%;"></div>
                             </div>
                             
                             <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-8" id="backToHomeBtn">
-                                <button onclick="showWelcomeScreen()" class="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition border border-gray-200 hover:border-blue-300">
+                                <button onclick="showWelcomeScreen()" class="quiet-button">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                     </svg>
@@ -445,15 +1505,15 @@
         </main>
     </div>
     
-    <div id="xlsxPanel" class="fixed right-0 top-0 h-full w-96 bg-white border-l border-gray-200 shadow-lg transform translate-x-full transition-transform duration-300 z-30 overflow-hidden flex flex-col">
-        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 flex items-center justify-between">
+    <div id="xlsxPanel" class="fixed right-0 top-0 h-full w-96 transform translate-x-full transition-transform duration-300 z-30 overflow-hidden flex flex-col">
+        <div class="data-panel-header flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="data-panel-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
-                <h3 class="font-semibold">数据对比分析</h3>
+                <h3 class="text-sm font-semibold">数据对比</h3>
             </div>
-            <button onclick="closeXlsxPanel()" class="p-1 hover:bg-white/20 rounded">
+            <button onclick="closeXlsxPanel()" class="header-icon-button" title="关闭数据面板" aria-label="关闭数据面板">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -468,7 +1528,7 @@
         </div>
     </div>
     
-    <button id="xlsxToggleBtn" onclick="toggleXlsxPanel()" class="fixed right-4 top-1/2 -translate-y-1/2 z-20 bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-l-xl shadow-lg transition-all hover:pr-5">
+    <button id="xlsxToggleBtn" onclick="toggleXlsxPanel()" class="fixed z-20 transition-all" title="打开数据对比" aria-label="打开数据对比">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
         </svg>
@@ -525,6 +1585,15 @@
                 tags: ['爱粉丝', '谦逊'],
                 abstract: '3mz对卡吧态度：善良->比赛讨论少了，不太纯了->不再容忍',
                 path: '2023/2023-04-29-3mz锐评卡吧/main.md'
+            },
+            {
+                id: '2023-07-18-3mz聊比赛被淘汰',
+                year: '2023',
+                date: '2023-07-18',
+                title: '3mz聊比赛被淘汰',
+                tags: ['想赢', '圣人形态', '中肯'],
+                abstract: 'DF 在 2023 Split 2 季后赛被淘汰后，3mz 回忆看到 Pite 笑时自己反而更加难受',
+                path: '2023/2023-07-18-3mz聊比赛被淘汰/main.md'
             },
             {
                 id: '2023-09-11-SAF买的TSM赢',
@@ -666,11 +1735,14 @@
         let currentIndex = -1;
         let currentFilter = 'all';
         let searchQuery = '';
+        let closeMobileMenuHandler = null;
         
         document.addEventListener('DOMContentLoaded', () => {
             renderEventList();
             renderTagFilters();
+            renderHomeOverview();
             setupEventListeners();
+            updateNavigationButtons();
         });
         
         function renderTagFilters() {
@@ -679,11 +1751,32 @@
             
             allTags.forEach(tag => {
                 const btn = document.createElement('button');
-                btn.className = 'tag-filter px-2 py-1 text-xs rounded-full bg-slate-700 hover:bg-slate-600 transition';
+                btn.className = 'tag-filter';
                 btn.dataset.tag = tag;
                 btn.textContent = tag;
                 container.appendChild(btn);
             });
+        }
+
+        function renderHomeOverview() {
+            const recentEvents = [...events]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 6);
+            document.getElementById('homeRecentEvents').innerHTML = recentEvents.map(event => {
+                const eventIndex = events.findIndex(item => item.id === event.id);
+                return `
+                    <button type="button" class="home-event-item" onclick="loadEvent(${eventIndex})">
+                        <span class="home-event-date">${escapeHtml(event.date)}</span>
+                        <span class="min-w-0">
+                            <span class="home-event-title block">${escapeHtml(event.title)}</span>
+                            <span class="home-event-abstract">${escapeHtml(event.abstract)}</span>
+                        </span>
+                        <svg class="home-event-arrow h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                `;
+            }).join('');
         }
         
         function renderEventList() {
@@ -709,13 +1802,13 @@
             
             Object.keys(grouped).sort((a, b) => b - a).forEach(year => {
                 const yearSection = document.createElement('div');
-                yearSection.className = 'mb-6';
+                yearSection.className = 'year-section';
                 
                 const yearHeader = document.createElement('div');
-                yearHeader.className = 'flex items-center gap-2 mb-3 px-2';
+                yearHeader.className = 'year-header';
                 yearHeader.innerHTML = `
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">${year}</span>
-                    <div class="flex-1 h-px bg-slate-700"></div>
+                    <span>${year}</span>
+                    <span class="year-count">${grouped[year].length}</span>
                 `;
                 yearSection.appendChild(yearHeader);
                 
@@ -723,18 +1816,14 @@
                 
                 grouped[year].forEach(event => {
                     const eventIndex = events.findIndex(e => e.id === event.id);
-                    const card = document.createElement('div');
-                    card.className = `event-card p-3 rounded-lg cursor-pointer mb-2 ${eventIndex === currentIndex ? 'active' : 'hover:bg-slate-800'}`;
+                    const card = document.createElement('button');
+                    card.type = 'button';
+                    card.className = `event-card${eventIndex === currentIndex ? ' active' : ''}`;
                     card.onclick = () => loadEvent(eventIndex);
                     
                     card.innerHTML = `
-                        <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0 w-2 h-2 rounded-full mt-2 ${getTagColor(event.tags[0])}"></div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="font-medium text-sm truncate">${event.title}</h3>
-                                <p class="event-date text-xs mt-1 ${eventIndex === currentIndex ? 'text-white/70' : 'text-slate-500'}">${event.date}</p>
-                            </div>
-                        </div>
+                        <span class="event-card-title block">${escapeHtml(event.title)}</span>
+                        <span class="event-date block">${escapeHtml(event.date)}</span>
                     `;
                     
                     yearSection.appendChild(card);
@@ -745,8 +1834,8 @@
             
             if (filteredEvents.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-8 text-slate-500">
-                        <p>没有找到匹配的事件</p>
+                    <div class="px-3 py-8 text-center text-sm text-gray-500">
+                        <p>没有匹配的事件</p>
                     </div>
                 `;
             }
@@ -785,19 +1874,30 @@
                 '高情商': 'tag-blue',
                 'x压抑': 'tag-red',
                 '胎毒': 'tag-red',
-                '赖着不死': 'tag-orange',
+                '赖着不死': 'tag-yellow',
                 '白莲花': 'tag-blue',
-                '谦逊': 'tag-green'
+                '谦逊': 'tag-green',
+                '想赢': 'tag-green',
+                '圣人形态': 'tag-blue',
+                '中肯': 'tag-gray',
+                '口无遮拦': 'tag-yellow'
             };
             return classes[tag] || 'tag-gray';
         }
         
         function showWelcomeScreen() {
+            setTableView(false);
             document.getElementById('eventContent').classList.add('hidden');
             document.getElementById('welcomeScreen').classList.remove('hidden');
-            document.getElementById('breadcrumb').innerHTML = '<span class="text-gray-400">选择一个事件开始浏览</span>';
+            document.getElementById('breadcrumb').innerHTML = '<span class="text-gray-400">档案首页</span>';
             currentIndex = -1;
             renderEventList();
+            updateNavigationButtons();
+            document.getElementById('contentArea').scrollTop = 0;
+        }
+
+        function setTableView(enabled) {
+            document.getElementById('contentShell').classList.toggle('table-view', enabled);
         }
         
         function loadEventByTitle(title) {
@@ -837,29 +1937,115 @@
                 }));
         }
 
-        function renderTigerSongsTable(rows) {
+        const tigerSongCoverFileOverrides = {
+            '大斧碎🀄️口': '大斧碎中口.jpg',
+            'DF地狱归来单曲《💩黏》': 'DF地狱归来单曲《史黏》.jpg'
+        };
+
+        const tigerSongScoreFiles = [
+            { path: '虎歌/最终评分结果.xlsx', label: '最终评分结果.xlsx' },
+            { path: '虎歌/367654152_按分数_虎歌打分_41_41.xlsx', label: '原始答卷数据.xlsx' },
+            { path: '虎歌/虎歌打分-默认报告.xlsx', label: '评分分布报告.xlsx' }
+        ];
+
+        function getTigerSongCoverPath(title) {
+            const fileName = tigerSongCoverFileOverrides[title] || `${title}.jpg`;
+            return getEncodedPath(`虎歌/images/${fileName}`);
+        }
+
+        async function loadTigerSongScores() {
+            const arrayBuffer = await fetchArrayBufferContent(tigerSongScoreFiles[0].path);
+            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const records = XLSX.utils.sheet_to_json(worksheet, { defval: null, raw: true });
+
+            return new Map(records
+                .filter(record => record['作品'])
+                .map(record => [String(record['作品']).trim(), {
+                    rank: Number(record['排名']),
+                    voters: Number(record['打分人数']),
+                    removedHigh: Number(record['去掉最高分数量']),
+                    removedLow: Number(record['去掉最低分数量']),
+                    validVoters: Number(record['剩余人数']),
+                    score: Number(record['最终评分'])
+                }]));
+        }
+
+        function renderTigerSongScoreSources(scoreError) {
+            const links = tigerSongScoreFiles.map(file => `
+                <a href="${getEncodedPath(file.path)}" target="_blank" rel="noopener noreferrer" class="source-link">
+                    <svg class="h-3.5 w-3.5 text-emerald-700" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>${escapeHtml(file.label)}</span>
+                </a>
+            `).join('');
+            const status = scoreError
+                ? `<p class="mt-1 text-xs text-red-600">评分加载失败：${escapeHtml(scoreError.message)}</p>`
+                : '<p class="mt-1 text-xs leading-5 text-gray-500">41 人打分，去掉 5 个最高分和 5 个最低分后，以剩余 31 人的平均分作为最终评分。</p>';
+
+            return `
+                <div class="score-source-panel">
+                    <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900">评分数据源</p>
+                            ${status}
+                        </div>
+                        <div class="flex flex-wrap gap-2">${links}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTigerSongsTable(rows, scores, scoreError) {
             const bodyRows = rows.map(row => {
                 const videoUrl = `https://www.bilibili.com/video/${encodeURIComponent(row.bv)}`;
-                const archivedClass = row.archived === '是' ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-500';
+                const archivedClass = row.archived === '是' ? 'border border-emerald-200 bg-emerald-50 text-emerald-800' : 'border border-gray-200 bg-gray-50 text-gray-500';
                 const archivedText = row.archived === '是' ? '已补档' : '未补档';
+                const coverSrc = getTigerSongCoverPath(row.title);
+                const coverAlt = `${row.title}封面`;
+                const score = scores.get(row.title);
+                const scoreHtml = score ? `
+                    <div class="flex items-baseline justify-center gap-1">
+                        <span class="text-base font-bold tabular-nums text-gray-900">${score.score.toFixed(4)}</span>
+                        <span class="text-[10px] text-gray-400">/ 5</span>
+                    </div>
+                    <div class="mt-0.5 text-[11px] font-medium text-amber-700">第 ${score.rank} 名</div>
+                ` : '<span class="text-gray-400">--</span>';
+                const sampleHtml = score ? `
+                    <div class="font-medium tabular-nums text-gray-700">${score.voters} 人</div>
+                    <div class="mt-0.5 text-[11px] text-gray-500">${score.validVoters} 人有效</div>
+                ` : '<span class="text-gray-400">--</span>';
                 return `
-                    <tr class="hover:bg-blue-50/40">
-                        <td class="border border-gray-300 px-3 py-2 text-left font-medium text-gray-800"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:underline">${escapeHtml(row.title)}</a></td>
-                        <td class="border border-gray-300 px-3 py-2 text-center"><span class="inline-flex rounded-full px-2 py-0.5 text-xs ${archivedClass}">${archivedText}</span></td>
-                        <td class="border border-gray-300 px-3 py-2 text-left text-gray-700">${escapeHtml(row.author)}</td>
-                        <td class="border border-gray-300 px-3 py-2 text-center"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 hover:underline">${escapeHtml(row.bv)}</a></td>
+                    <tr class="align-middle">
+                        <td class="text-center">
+                            <button type="button" class="tiger-song-cover group relative inline-block cursor-zoom-in overflow-hidden bg-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2" data-tiger-song-cover data-cover-src="${escapeHtml(coverSrc)}" data-cover-alt="${escapeHtml(coverAlt)}" aria-label="放大查看${escapeHtml(coverAlt)}" title="点击放大封面">
+                                <img src="${escapeHtml(coverSrc)}" alt="${escapeHtml(coverAlt)}" width="224" height="126" loading="lazy" class="block" onerror="this.hidden = true; this.nextElementSibling.classList.remove('hidden')">
+                                <span class="hidden h-full w-full flex items-center justify-center px-2 text-xs text-gray-500">暂无封面</span>
+                            </button>
+                        </td>
+                        <td class="text-left font-medium text-gray-800"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(row.title)}</a></td>
+                        <td class="text-center">${scoreHtml}</td>
+                        <td class="text-center"${score ? ` title="去掉最高分 ${score.removedHigh} 人、最低分 ${score.removedLow} 人"` : ''}>${sampleHtml}</td>
+                        <td class="text-center"><span class="inline-flex rounded-full px-2 py-0.5 text-xs ${archivedClass}">${archivedText}</span></td>
+                        <td class="text-left text-gray-700">${escapeHtml(row.author)}</td>
+                        <td class="text-center"><a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="font-medium">${escapeHtml(row.bv)}</a></td>
                     </tr>
                 `;
             }).join('');
 
             return `
-                <table class="w-full min-w-[720px] border-collapse text-xs sm:text-sm">
+                ${renderTigerSongScoreSources(scoreError)}
+                <table class="tiger-song-table border-collapse text-xs sm:text-sm">
                     <thead>
                         <tr>
-                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-left font-semibold text-gray-800">作品</th>
-                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-gray-800">补档</th>
-                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-left font-semibold text-gray-800">作者</th>
-                            <th class="border border-gray-300 bg-blue-50 px-3 py-2 text-center font-semibold text-gray-800">B站链接</th>
+                            <th class="w-32 text-center">封面</th>
+                            <th class="min-w-56 text-left">作品</th>
+                            <th class="w-28 text-center">最终评分</th>
+                            <th class="w-24 text-center">打分人数</th>
+                            <th class="w-20 text-center">补档</th>
+                            <th class="min-w-52 text-left">作者</th>
+                            <th class="w-28 text-center">B站链接</th>
                         </tr>
                     </thead>
                     <tbody>${bodyRows}</tbody>
@@ -867,7 +2053,16 @@
             `;
         }
 
+        function bindTigerSongCoverPreviews(container) {
+            container.querySelectorAll('[data-tiger-song-cover]').forEach(button => {
+                button.addEventListener('click', () => {
+                    openImageModal(button.dataset.coverSrc, button.dataset.coverAlt);
+                });
+            });
+        }
+
         async function showTigerSongsTable() {
+            setTableView(true);
             document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('eventContent').classList.remove('hidden');
             document.getElementById('eventBody').classList.add('hidden');
@@ -888,19 +2083,28 @@
 
             const titleEl = document.getElementById('xlsxMainTitle');
             const tableContainer = document.getElementById('xlsxMainTableContainer');
-            titleEl.textContent = '虎歌作品表';
+            titleEl.textContent = '虎歌作品评分表';
             tableContainer.innerHTML = '<div class="text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div><p class="text-sm text-gray-500 mt-2">加载中...</p></div>';
 
             document.getElementById('breadcrumb').innerHTML = `
                 <span class="text-gray-400">虎歌</span>
                 <span class="mx-2 text-gray-300">/</span>
-                <span class="font-medium text-gray-800">作品表</span>
+                <span class="font-medium text-gray-800">作品评分表</span>
             `;
 
             try {
-                const markdown = await fetchMarkdownContent('虎歌/main.md');
-                const rows = parseTigerSongTable(markdown);
-                tableContainer.innerHTML = renderTigerSongsTable(rows);
+                const [markdownResult, scoresResult] = await Promise.allSettled([
+                    fetchMarkdownContent('虎歌/main.md'),
+                    loadTigerSongScores()
+                ]);
+                if (markdownResult.status === 'rejected') {
+                    throw markdownResult.reason;
+                }
+                const rows = parseTigerSongTable(markdownResult.value);
+                const scores = scoresResult.status === 'fulfilled' ? scoresResult.value : new Map();
+                const scoreError = scoresResult.status === 'rejected' ? scoresResult.reason : null;
+                tableContainer.innerHTML = renderTigerSongsTable(rows, scores, scoreError);
+                bindTigerSongCoverPreviews(tableContainer);
             } catch (error) {
                 tableContainer.innerHTML = `<p class="text-red-500 text-sm">加载失败: ${error.message}</p>`;
             }
@@ -929,12 +2133,36 @@
             throw lastError;
         }
 
+        async function fetchArrayBufferContent(path) {
+            const encodedPath = getEncodedPath(path);
+            const cacheBuster = 't=' + Date.now();
+            const urls = [
+                encodedPath + '?' + cacheBuster,
+                'https://raw.githubusercontent.com/aiicu/best-igl-wiki/main/' + encodedPath + '?' + cacheBuster
+            ];
+            let lastError;
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url, { cache: 'no-store' });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return await response.arrayBuffer();
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+            throw lastError;
+        }
+
         function getEncodedPath(path) {
             return path.replace(/\\/g, '/').split('/').map(part => encodeURIComponent(part)).join('/');
         }
 
         async function loadEvent(index) {
             if (index < 0 || index >= events.length) return;
+
+            setTableView(false);
             
             const xlsxContent = document.getElementById('xlsxMainContent');
             if (!xlsxContent.classList.contains('hidden')) {
@@ -959,7 +2187,7 @@
             
             const tagsContainer = document.getElementById('eventTags');
             tagsContainer.innerHTML = event.tags.map(tag => 
-                `<span class="px-2 py-1 text-xs rounded-full bg-white/20">${tag}</span>`
+                `<span class="event-tag ${getTagClass(tag)}">${escapeHtml(tag)}</span>`
             ).join('');
             
             const pdfLink = document.getElementById('eventPdf');
@@ -1196,20 +2424,14 @@
         
         function updateNavigationButtons() {
             document.getElementById('prevBtn').disabled = currentIndex <= 0;
-            document.getElementById('nextBtn').disabled = currentIndex >= events.length - 1;
+            document.getElementById('nextBtn').disabled = currentIndex < 0 || currentIndex >= events.length - 1;
         }
         
         function filterByTag(tag) {
             currentFilter = tag;
             
             document.querySelectorAll('.tag-filter').forEach(btn => {
-                if (btn.dataset.tag === tag) {
-                    btn.classList.add('bg-blue-500', 'text-white');
-                    btn.classList.remove('bg-slate-700');
-                } else {
-                    btn.classList.remove('bg-blue-500', 'text-white');
-                    btn.classList.add('bg-slate-700');
-                }
+                btn.classList.toggle('active', btn.dataset.tag === tag);
             });
             
             renderEventList();
@@ -1260,6 +2482,8 @@
                 overlay.classList.add('hidden');
                 document.body.style.overflow = '';
             }
+
+            closeMobileMenuHandler = closeMobileMenu;
             
             mobileMenuBtn.addEventListener('click', () => {
                 if (sidebar.classList.contains('hidden') || sidebar.classList.contains('-translate-x-full')) {
@@ -1297,8 +2521,8 @@
             { path: '数据对比/huge数据对比/3mz-vs-jacky.xlsx', name: '3mz vs jacky' },
             { path: '数据对比/huge数据对比/3mz-vs-Crazycong.xlsx', name: '3mz vs Crazycong' },
             { path: '数据对比/huge数据对比/3mz-pite-noname.xlsx', name: '3mz pite noname' },
-            { path: '数据对比/cn队数据整理/year6-s1-R1.xlsx', name: 'cn队 year6-s1-R1' },
-            { path: '数据对比/cn指挥数据对比/世界赛.xlsx', name: 'cn指挥 世界赛' }
+            { path: '数据对比/cn队数据整理/指挥数据.xlsx', name: 'CN 队指挥数据' },
+            { path: '数据对比/cn队数据整理/普通选手数据.xlsx', name: 'CN 队普通选手数据' }
         ];
         
         let xlsxPanelOpen = false;
@@ -1329,6 +2553,8 @@
         function closeXlsxMainContent(returnToHome = true) {
             const xlsxContent = document.getElementById('xlsxMainContent');
             const eventContentCard = document.getElementById('eventContentCard');
+
+            setTableView(false);
             
             if (xlsxContent.parentElement === document.getElementById('eventContent')) {
                 eventContentCard.appendChild(xlsxContent);
@@ -1375,21 +2601,25 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeImageModal();
+                closeXlsxPanel();
+                if (closeMobileMenuHandler && window.innerWidth < 1024 && !document.getElementById('mobileOverlay').classList.contains('hidden')) {
+                    closeMobileMenuHandler();
+                }
             }
         });
         
         function renderXlsxFileList() {
             const container = document.getElementById('xlsxFileList');
-            container.innerHTML = '<p class="text-sm text-gray-500 mb-3">点击文件查看数据对比</p>';
+            container.innerHTML = '<p class="mb-3 text-xs leading-5 text-gray-500">选择一个工作簿，在主内容区查看完整数据。</p>';
             
             xlsxFiles.forEach((file, index) => {
                 const btn = document.createElement('button');
-                btn.className = 'w-full text-left px-3 py-2 bg-gray-50 hover:bg-purple-50 border border-gray-200 hover:border-purple-300 rounded-lg transition text-sm flex items-center gap-2';
+                btn.className = 'data-file-button';
                 btn.innerHTML = `
-                    <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 flex-none text-emerald-700" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
                     </svg>
-                    ${file.name}
+                    <span>${escapeHtml(file.name)}</span>
                 `;
                 btn.onclick = () => loadXlsxFile(file, index);
                 container.appendChild(btn);
@@ -1397,6 +2627,7 @@
         }
         
         async function loadXlsxFile(file, index) {
+            setTableView(true);
             const panel = document.getElementById('xlsxPanel');
             const btn = document.getElementById('xlsxToggleBtn');
             panel.classList.add('translate-x-full');
@@ -1430,7 +2661,7 @@
             const tableContainer = document.getElementById('xlsxMainTableContainer');
             
             titleEl.textContent = file.name;
-            tableContainer.innerHTML = '<div class="text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div><p class="text-sm text-gray-500 mt-2">加载中...</p></div>';
+            tableContainer.innerHTML = '<div class="text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto"></div><p class="text-sm text-gray-500 mt-2">加载中...</p></div>';
             
             document.getElementById('breadcrumb').innerHTML = `
                 <span class="text-gray-400">数据对比</span>
@@ -1448,9 +2679,9 @@
                 
                 const html = XLSX.utils.sheet_to_html(worksheet, { editable: false });
                 
-                const styledHtml = html.replace('<table', '<table class="text-xs border-collapse"')
-                    .replace(/<td/g, '<td class="border border-gray-300 px-2 py-1 text-center"')
-                    .replace(/<th/g, '<th class="border border-gray-300 px-2 py-1 bg-purple-50 font-semibold text-center"');
+                const styledHtml = html.replace('<table', '<table class="text-xs"')
+                    .replace(/<td/g, '<td class="text-center"')
+                    .replace(/<th/g, '<th class="font-semibold text-center"');
                 
                 tableContainer.innerHTML = styledHtml;
             } catch (error) {

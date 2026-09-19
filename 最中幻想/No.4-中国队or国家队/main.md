@@ -48,4 +48,5 @@ DF系粉丝为降低此次比赛在国家层面的高度，禁止此次cn代表�
 1. 中国文化娱乐行业协会_百度百科：https://baike.baidu.com/item/中国文化娱乐行业协会
 1. 江苏无锡KONE代表中国国家队夺得2023东亚电竞锦标赛金牌_国家体育总局：https://www.sport.gov.cn/n14471/n14481/n14518/c27226868/content.html
 1. 无锡新传媒：第三届东亚电竞锦标赛启动 无锡四名电竞选手入选国家队：https://www.wxrb.com/doc/2023/12/17/324990.shtml
+1. 言论来源：https://www.bilibili.com/video/BV1Zj411p7mn
 
